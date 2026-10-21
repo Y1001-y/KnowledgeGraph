@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skills>
+    <!-- ==================== 知识类 ==================== -->
+    <category name="知识类">
+        <keywords>
+        </keywords>
+        <category name="软件工程">
+            <keywords>
+                <keyword>系统架构</keyword>
+                <keyword>需求分析</keyword>
+                <keyword>系统设计</keyword>
+                <keyword>DevOps</keyword>
+                <keyword>软件项目管理</keyword>
+                <keyword>软件维护</keyword>
+                <keyword>软件测试理论</keyword>
+                <keyword>软件开发生命周期</keyword>
+                <keyword>设计模式</keyword>
+                <keyword>软件工程原理</keyword>
+                <keyword>系统安全</keyword>
+            </keywords>
+        </category>
+
+        <category name="数据结构">
+            <keywords>
+                <keyword>数据结构</keyword>
+            </keywords>
+        </category>
+
+        <category name="操作系统">
+            <keywords>
+                <keyword>Linux</keyword>
+            </keywords>
+        </category>
+
+        <category name="网络基础">
+            <keywords>
+                <keyword>TCP/IP</keyword>
+                <keyword>UDP</keyword>
+            </keywords>
+        </category>
+
+        <category name="数学基础">
+            <keywords>
+                <keyword>线性代数</keyword>
+                <keyword>四元数</keyword>
+                <keyword>空间变换</keyword>
+                <keyword>数据滤波</keyword>
+            </keywords>
+        </category>
+
+         <category name="基础程序语言">
+            <keywords>
+             <keyword>C++</keyword>
+                <keyword>C</keyword>
+                <keyword>Python</keyword>
+                <keyword>Java</keyword>
+             </keywords>
+         </category>
+
+        <category name="前端开发">
+            <keywords>
+                <keyword>前端架构</keyword>
+                <keyword>响应式设计</keyword>
+                <keyword>单页面应用</keyword>
+                <keyword>Web 安全</keyword>
+                <keyword>跨浏览器兼容性</keyword>
+            </keywords>
+        </category>
+
+        <category name="后端开发">
+            <keywords>
+                <keyword>后端架构</keyword>
+                <keyword>RESTful API 设计</keyword>
+                <keyword>微服务架构</keyword>
+                <keyword>数据库设计理论</keyword>
+            </keywords>
+        </category>
+
+        <category name="移动开发">
+            <keywords>
+                <keyword>移动应用架构</keyword>
+                <keyword>设计移动用户体验</keyword>
+            </keywords>
+        </category>
+
+        <category name="大数据">
+            <keywords>
+                <keyword>数据分析基础</keyword>
+                <keyword>数据挖掘原理</keyword>
+                <keyword>大数据处理</keyword>
+                <keyword>数据治理</keyword>
+                <keyword>爬虫技术</keyword>
+                <keyword>ETL理论</keyword>
+            </keywords>
+        </category>
+
+        <category name="算法">
+            <keywords>
+                <keyword>基础算法设计</keyword>
+                <keyword>搜索算法理论</keyword>
+                <keyword>推荐系统算法</keyword>
+                <keyword>机器学习算法</keyword>
+                <keyword>深度学习原理</keyword>
+            </keywords>
+        </category>
+
+        <category name="人工智能">
+            <keywords>
+                <keyword>深度学习</keyword>
+                <keyword>机器学习</keyword>
+                <keyword>自然语言处理</keyword>
+                <keyword>图像处理</keyword>
+                <keyword>AI伦理学</keyword>
+            </keywords>
+        </category>
+
+
+        <category name="软件测试">
+            <keywords>
+                <keyword>黑盒测试</keyword>
+                <keyword>白盒测试</keyword>
+                <keyword>性能测试</keyword>
+                <keyword>web测试</keyword>
+                <keyword>AI伦理学</keyword>
+            </keywords>
+        </category>
+    </category>
+    <!-- ==================== 工具类 ==================== -->
+    <category name="工具类">
+        <keywords>
+            <keyword>工具使用</keyword>
+        </keywords>
+        <category name="软件工程">
+            <keywords>
+                <keyword>UML</keyword>
+                <keyword>墨刀</keyword>
+                <keyword>ER 图工具</keyword>
+                <keyword>JIRA</keyword>
+                <keyword>Git</keyword>
+            </keywords>
+        </category>
+
+        <category name="游戏开发">
+            <keywords>
+                <keyword>Unity</keyword>
+                <keyword>Unreal</keyword>
+            </keywords>
+        </category>
+
+         <category name="机器人">
+            <keywords>
+                <keyword>ROS</keyword>
+                <keyword>ROS2</keyword>
+                <keyword>MuJoCo</keyword>
+                <keyword>Isaac Gym</keyword>
+            </keywords>
+        </category>
+
+        <category name="前端开发">
+            <keywords>
+                <keyword>HTML</keyword>
+                <keyword>CSS</keyword>
+                <keyword>JavaScript</keyword>
+                <keyword>Vue</keyword>
+                <keyword>React</keyword>
+                <keyword>Bootstrap</keyword>
+                <keyword>Webpack</keyword>
+                <keyword>U3D</keyword>
+                <keyword>UE4</keyword>
+            </keywords>
+        </category>
+
+        <category name="后端开发">
+            <keywords>
+                <keyword>Node.js</keyword>
+                <keyword>Go</keyword>
+                <keyword>PHP</keyword>
+                <keyword>Hadoop</keyword>
+            </keywords>
+        </category>
+
+        <category name="开发平台">
+            <keywords>
+                <keyword>.NET</keyword>
+                <keyword>Qt</keyword>
+            </keywords>
+        </category>
+
+
+        <category name="Linux">
+            <keywords>
+                <keyword>shell</keyword>
+                <keyword>perl</keyword>
+            </keywords>
+        </category>
+
+        <category name="移动开发">
+            <keywords>
+                <keyword>Android Studio</keyword>
+                <keyword>Xcode</keyword>
+                <keyword>Flutter</keyword>
+                <keyword>React Native</keyword>
+            </keywords>
+        </category>
+
+        <category name="国产信创">
+            <keywords>
+                <keyword>鸿蒙</keyword>
+                <keyword>信创解决方案</keyword>
+            </keywords>
+        </category>
+
+        <category name="测试">
+            <keywords>
+                <keyword>TestStand</keyword>
+                <keyword>NI Labview</keyword>
+                <keyword>TestStand</keyword>
+            </keywords>
+        </category>
+
+        <category name="实施/运维">
+            <keywords>
+                <keyword>运维工具</keyword>
+                <keyword>系统监控工具</keyword>
+                <keyword>CI/CD</keyword>
+            </keywords>
+        </category>
+
+        <category name="网络">
+            <keywords>
+                <keyword>网络监控工具</keyword>
+                <keyword>SRE 工具</keyword>
+            </keywords>
+        </category>
+
+        <category name="文档">
+            <keywords>
+                <keyword>Markdown</keyword>
+                <keyword>文档管理工具</keyword>
+                <keyword>Confluence</keyword>
+            </keywords>
+        </category>
+
+        <category name="数据库">
+            <keywords>
+                <keyword>Mysql</keyword>
+                <keyword>PostgreSQL</keyword>
+                <keyword>MongoDB</keyword>
+                <keyword>DBA 工具</keyword>
+                <keyword>数据可视化工具</keyword>
+            </keywords>
+        </category>
+
+        <category name="大数据">
+            <keywords>
+                <keyword>Hadoop</keyword>
+                <keyword>Spark</keyword>
+                <keyword>数据仓库工具</keyword>
+                <keyword>数据分析工具</keyword>
+            </keywords>
+        </category>
+
+        <category name="UI/UX设计">
+            <keywords>
+                <keyword>Figma</keyword>
+                <keyword>Adobe XD</keyword>
+                <keyword>Sketch</keyword>
+                <keyword>Axure</keyword>
+            </keywords>
+        </category>
+    </category>
+</skills>

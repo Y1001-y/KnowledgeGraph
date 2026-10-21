@@ -1,0 +1,81 @@
+# 默认忽略的文件
+/shelf/
+/workspace.xml
+# 基于编辑器的 HTTP 客户端请求
+/httpRequests/
+
+===== Python =====
+pycache/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+虚拟环境
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+测试与缓存
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+Jupyter
+.ipynb_checkpoints/
+
+===== 环境变量 / 密钥 =====
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+===== 本项目的数据产物（不建议入库）=====
+原始招聘数据（体积大，且含公司/岗位等抓取数据）
+*.csv
+*.xlsx
+*.xls
+!requirements.txt
+
+脚本生成的结果文件
+清洗结果.*
+技能岗位数据库.*
+result.csv
+
+SQLite 数据库（可随时由脚本重建）
+*.db
+*.sqlite
+*.sqlite3
+
+===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+Excel 临时锁文件
+~$*
+*.tmp
+
+===== 日志 =====
+*.log
+logs/
+
+# 忽略原始数据大文件
+Origin data/
+*.csv
