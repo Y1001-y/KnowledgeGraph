@@ -79,3 +79,29 @@ logs/
 # 忽略原始数据大文件
 Origin data/
 *.csv
+
+
+# === FineTuning 微调模块 ===
+FineTuning/Outputs/*
+!FineTuning/Outputs/.gitkeep
+FineTuning/Datasets/Raw/*
+!FineTuning/Datasets/Raw/.gitkeep
+FineTuning/Datasets/Processed/*
+!FineTuning/Datasets/Processed/.gitkeep
+
+# 模型权重（绝不提交）
+*.safetensors
+*.bin
+*.gguf
+*.pt
+*.pth
+models/
+checkpoint-*/
+lora_adapter/
+runs/
+
+# 缓存
+.cache/
+uv-cache/
+hf-cache/
+ms-cache/
