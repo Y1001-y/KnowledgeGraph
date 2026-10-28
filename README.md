@@ -5,8 +5,9 @@
 # config
 暂存的配置文件（xml等）
 
-# DataPrerocessing
-数据预处理脚本 包括数据清洗、数据去重和初步数据分析的python脚本
-
 # Origin data
 源数据存放文件夹 当前是csv格式的原始数据
+
+# FineTuning
+模型微调模块。集中管理底座模型选择、数据集构建、QLoRA 训练与导出部署。
+
