@@ -318,13 +318,21 @@ def main():
     df = df[df["jobInfo_postDescription"].notna()].copy()
     n_dup = int(df.duplicated(subset=["jobInfo_jobName", "jobInfo_postDescription"]).sum())
     df_unique = df.drop_duplicates(subset=["jobInfo_jobName", "jobInfo_postDescription"]).copy()
-    print(f"清洗: JD缺失 {n_no_jd} 行 | 完全重复岗位 {n_dup} 行 | 去重后 {len(df_unique)} 行")
+    # 划分用的去重键：只看 JD 正文（忽略岗位名差异和空白），
+    # 因为同一份 JD 换个标题重发也算同一"题"，否则会漏进测试集形成泄漏
+    df["_jdkey"] = (df["jobInfo_postDescription"]
+                    .str.replace(r"\s+", "", regex=True)
+                    .str.slice(0, 2000))
+    df_split = df.drop_duplicates(subset=["_jdkey"]).copy()
+    print(f"清洗: JD缺失 {n_no_jd} 行 | 同岗位名+JD重复 {n_dup} 行 | "
+          f"按岗位去重 {len(df_unique)} 行 | 按JD去重 {len(df_split)} 行（用于切分）")
 
-    # ---------- 2. 训练/测试划分: 前 n 行测试集，其余训练集 ----------
-    n = min(args.n, len(df))
-    test_df = df.iloc[:n].copy()
-    train_df = df.iloc[n:].copy()
-    print(f"划分: 测试集 前 {len(test_df)} 行 | 训练集 其余 {len(train_df)} 行")
+    # ---------- 2. 训练/测试划分 ----------
+    # 在【按 JD 去重后】的集合上切分，确保同一份 JD 不会同时落进训练集和测试集（防泄漏）
+    n = min(args.n, len(df_split))
+    test_df = df_split.iloc[:n].drop(columns=["_jdkey"]).copy()
+    train_df = df_split.iloc[n:].drop(columns=["_jdkey"]).copy()
+    print(f"划分(按JD去重后切分): 测试集 前 {len(test_df)} 行 | 训练集 其余 {len(train_df)} 行")
 
     test_df.to_csv(test_dir / "测试集.csv", index=False, encoding="utf-8-sig")
     train_df.to_csv(train_dir / "训练集.csv", index=False, encoding="utf-8-sig")
@@ -392,18 +400,21 @@ def main():
                 if not jd:
                     dropped += 1
                     continue
-                # 标签 = 纯词典抽取（岗位名+JD），默认不并入平台 showSkills 标签——
+                # 先截断再抽标签：标签必须来自模型"看得见"的那段文本，
+                # 否则会出现"标答里的技能在输入里找不到"的不可学样本
+                jd_vis = jd[:JD_MAX_CHARS]
+                # 标签 = 纯词典抽取（岗位名+可见JD），默认不并入平台 showSkills 标签——
                 # 平台标签混有"工作简单/可带手机"等非技能内容，会污染训练标签
-                skills = extract_skills(" ".join(filter(None, [job_name, jd])), matchers)
+                skills = extract_skills(" ".join(filter(None, [job_name, jd_vis])), matchers)
                 if args.use_show_skills:
                     skills += [s for s in parse_show_skills(show) if s not in skills]
                 if not skills:
                     dropped += 1
                     continue
                 skills.sort(key=lambda s: freq_order.get(s, 10**9))
-                inp = (f"岗位名称：{getattr(r, 'jobInfo_jobName', '')}\n"
-                       f"职位类别：{getattr(r, 'jobInfo_positionName', '')}\n"
-                       f"岗位描述：{jd[:JD_MAX_CHARS]}")
+                inp = (f"岗位名称：{job_name}\n"
+                       f"职位类别：{sval('jobInfo_positionName')}\n"
+                       f"岗位描述：{jd_vis}")
                 f.write(json.dumps({"instruction": INSTRUCTION,
                                     "input": inp,
                                     "output": "、".join(skills)},
