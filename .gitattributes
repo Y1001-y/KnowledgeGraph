@@ -1,0 +1,22 @@
+# 默认开启换行符标准化
+* text=auto
+
+# Shell 脚本必须 LF，否则在 WSL/Linux 下执行会报 "$'\r': command not found"
+*.sh   text eol=lf
+
+# Python / Markdown / YAML 统一 LF
+*.py   text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+
+# 数据文件不做换行转换（虽然默认不入库，防止误加时被改坏）
+*.csv  -text
+*.xlsx -text
+*.jsonl -text
+
+# 二进制
+*.safetensors binary
+*.gguf binary
+*.png binary
+*.jpg binary
