@@ -11,6 +11,7 @@ from urllib.parse import quote
 
 from config import GRAPH_DATA
 from mw_client import MediaWikiClient
+from seed_data import load_snapshot
 
 TYPE_STYLE = {
     "课程": {"color": "#409eff", "size": 34},
@@ -21,6 +22,57 @@ TYPE_STYLE = {
     "报告": {"color": "#b4b2a9", "size": 28},
 }
 DEFAULT_STYLE = {"color": "#888780", "size": 30}
+
+# 边的语义标注（源类型, 目标类型) -> 关系名，用于 tooltip 与连线配色
+REL_NAMES = {
+    ("课程", "技能"): "教授", ("技能", "课程"): "开设于",
+    ("岗位", "技能"): "要求", ("技能", "岗位"): "任职方向",
+    ("概念", "技能"): "聚合", ("概念", "课程"): "相关课程",
+    ("概念", "岗位"): "相关岗位", ("索引", "课程"): "收录",
+    ("索引", "技能"): "收录", ("索引", "岗位"): "收录",
+    ("索引", "概念"): "收录",
+}
+REL_COLORS = {"教授": "#409eff", "要求": "#f56c6c", "聚合": "#e6a23c"}
+
+
+def snapshot_info() -> tuple[dict, dict, dict]:
+    """从数据快照提取节点标注信息（仅用于前端展示，不影响图谱结构）。"""
+    snap = load_snapshot()
+    skill_names = {s["name"] for s in snap["skills"]}
+    position_titles = {p["title"] for p in snap["positions"]}
+    # 与 ingest.build_titles 保持一致的消歧后缀规则
+    course_info = {c["name"] + ("（课程）" if c["name"] in skill_names
+                                or c["name"] in position_titles else ""): c
+                   for c in snap["courses"]}
+    skill_info = {s["name"]: s for s in snap["skills"]}
+    pos_info: dict[str, dict] = {}
+    for p in snap["positions"]:
+        e = pos_info.setdefault(p["title"], {"recs": 0, "smin": 0, "smax": 0})
+        e["recs"] = p.get("recs") or e["recs"]
+        e["smin"] = p.get("salary_min") or e["smin"]
+        e["smax"] = p.get("salary_max") or e["smax"]
+    return course_info, skill_info, pos_info
+
+
+def node_annotation(t: str, name: str,
+                    course_info: dict, skill_info: dict, pos_info: dict) -> dict:
+    extra = {}
+    if t == "课程" and name in course_info:
+        c = course_info[name]
+        extra = {"teacher": c.get("teacher", ""), "credit": c.get("credit", 0),
+                 "desc": (c.get("description", "") or "")[:60]}
+    elif t == "技能":
+        bare = name[:-4] if name.endswith("（技能）") else name  # 剥掉消歧后缀
+        if bare in skill_info:
+            s = skill_info[bare]
+            extra = {"direction": s["category"],
+                     "aliases": s.get("aliases") if isinstance(s.get("aliases"), list) else []}
+    elif t == "概念" and name.startswith("概念-"):
+        extra = {"direction": name[3:]}
+    elif t == "岗位" and name in pos_info:
+        e = pos_info[name]
+        extra = {"recs": e["recs"], "smin": e["smin"], "smax": e["smax"]}
+    return extra
 
 
 def node_type(categories: list[str], title: str) -> str:
@@ -37,7 +89,9 @@ def node_type(categories: list[str], title: str) -> str:
 def build_graph() -> dict:
     mw = MediaWikiClient()
     pages = mw.all_pages_with_links()
+    course_info, skill_info, pos_info = snapshot_info()
 
+    type_of = {p["title"]: node_type(p["categories"], p["title"]) for p in pages}
     titles = {p["title"] for p in pages}
     degree = {p["title"]: 0 for p in pages}
     nodes, links, seen = [], [], set()
@@ -50,12 +104,14 @@ def build_graph() -> dict:
             if key in seen:
                 continue
             seen.add(key)
-            links.append({"source": p["title"], "target": t})
+            rel = REL_NAMES.get((type_of[p["title"]], type_of[t]), "引用")
+            links.append({"source": p["title"], "target": t, "rel": rel,
+                          "lineStyle": {"color": REL_COLORS.get(rel, "#c0c4cc")}})
             degree[p["title"]] += 1
             degree[t] += 1
 
     for p in pages:
-        t = node_type(p["categories"], p["title"])
+        t = type_of[p["title"]]
         style = TYPE_STYLE.get(t, DEFAULT_STYLE)
         nodes.append({
             "name": p["title"],
@@ -65,6 +121,7 @@ def build_graph() -> dict:
             "symbolSize": style["size"] + min(degree.get(p["title"], 0) * 2, 40),
             "itemStyle": {"color": style["color"]},
             "url": mw.page_url(p["title"]),
+            **node_annotation(t, p["title"], course_info, skill_info, pos_info),
         })
 
     categories = [{"name": k, "itemStyle": {"color": v["color"]}} for k, v in TYPE_STYLE.items()]

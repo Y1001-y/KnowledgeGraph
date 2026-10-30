@@ -103,6 +103,12 @@
           <span>{{ name }}</span>
           <span class="cnt">{{ countType(name) }}</span>
         </div>
+        <el-divider style="margin:10px 0" />
+        <div style="font-size:12px;color:#909399;margin-bottom:6px">关系连线</div>
+        <div v-for="(c, name) in RELS" :key="name" class="legend-item" style="cursor:default">
+          <span :style="{ display:'inline-block', width:'22px', height:'0', borderTop:'3px solid ' + c, borderRadius:'2px' }"></span>
+          <span style="font-size:12px">{{ name }}</span>
+        </div>
       </el-card>
 
       <el-card shadow="never">
@@ -112,6 +118,10 @@
             <el-button :icon="Search" @click="applyView"></el-button>
           </template>
         </el-input>
+        <el-select v-model="dirFilter" placeholder="按方向筛选子图" clearable filterable
+                   style="width:100%;margin-top:12px" @change="applyView">
+          <el-option v-for="d in directions" :key="d" :value="d" :label="'方向：' + d"></el-option>
+        </el-select>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
           <span style="font-size:13px;color:#606266">显示全部节点名称</span>
           <el-switch v-model="showLabels" @change="applyView"></el-switch>
@@ -126,7 +136,13 @@
           {{ selected.name }}
         </div>
         <div class="kv"><span class="k">类型</span><span class="v"><el-tag size="small" :type="tagType(selected.type)">{{ selected.type }}</el-tag></span></div>
-        <div class="kv"><span class="k">分类</span><span class="v">{{ selected.category || '-' }}</span></div>
+        <div class="kv" v-if="selected.direction"><span class="k">方向</span><span class="v">{{ selected.direction }}</span></div>
+        <div class="kv" v-else><span class="k">分类</span><span class="v">{{ selected.category || '-' }}</span></div>
+        <div class="kv" v-if="selected.teacher"><span class="k">主讲教师</span><span class="v">{{ selected.teacher }}</span></div>
+        <div class="kv" v-if="selected.credit"><span class="k">学分</span><span class="v">{{ selected.credit }}</span></div>
+        <div class="kv" v-if="selected.recs"><span class="k">招聘样本</span><span class="v">{{ selected.recs }} 条</span></div>
+        <div class="kv" v-if="selected.smax"><span class="k">薪资区间</span><span class="v">{{ selected.smin.toFixed(0) }}k – {{ selected.smax.toFixed(0) }}k</span></div>
+        <div class="kv" v-if="selected.aliases && selected.aliases.length"><span class="k">别名</span><span class="v" :title="selected.aliases.join('、')">{{ selected.aliases.join('、') }}</span></div>
         <div class="kv"><span class="k">连接数</span><span class="v">{{ selected.degree }}</span></div>
         <el-button class="drawer-link" type="primary" plain style="width:100%" @click="openPreview(selected)">查看 Wiki 页面</el-button>
       </el-card>
@@ -155,12 +171,26 @@
 </div>
 
 <script>
-const { createApp, ref, reactive, onMounted, nextTick } = Vue;
+const { createApp, ref, reactive, computed, onMounted, nextTick } = Vue;
 const { ElMessage } = ElementPlus;
 const Refresh = ElementPlusIconsVue.Refresh, Download = ElementPlusIconsVue.Download, Search = ElementPlusIconsVue.Search;
 
 const TYPES = { "课程": "#409eff", "技能": "#67c23a", "岗位": "#f56c6c", "概念": "#e6a23c", "索引": "#909399", "报告": "#b4b2a9", "其他": "#888780" };
 const TAGS = { "课程": "primary", "技能": "success", "岗位": "danger", "概念": "warning" };
+const RELS = { "教授": "#409eff", "要求": "#f56c6c", "聚合": "#e6a23c", "引用": "#c0c4cc" };
+
+// 节点 tooltip：按类型拼业务信息行
+function nodeTip(d) {
+  const rows = [`<b>${d.name}</b>`, `类型: ${d.type}`];
+  if (d.direction) rows.push(`方向: ${d.direction}`);
+  if (d.teacher) rows.push(`主讲: ${d.teacher}`);
+  if (d.credit) rows.push(`学分: ${d.credit}`);
+  if (d.recs) rows.push(`招聘样本: ${d.recs} 条`);
+  if (d.smax) rows.push(`薪资: 约 ${d.smin.toFixed(0)}k – ${d.smax.toFixed(0)}k`);
+  if (d.aliases && d.aliases.length) rows.push(`别名: ${d.aliases.join("、")}`);
+  rows.push(`连接数: ${d.degree}`, `<span style="color:#909399">点击节点查看详情</span>`);
+  return rows.join("<br/>");
+}
 
 createApp({
   setup() {
@@ -173,10 +203,13 @@ createApp({
     const shown = reactive({ nodes: [], links: [] });
     const drawer = ref(false);
     const showLabels = ref(false);
+    const dirFilter = ref("");
     const previewHtml = ref(""), previewLoading = ref(false), previewTitle = ref(""), previewUrl = ref("");
     let chart = null;
 
     const countType = t => fullData.nodes.filter(n => n.type === t).length;
+    const directions = computed(() => [...new Set(fullData.nodes
+      .map(n => n.direction).filter(Boolean))].sort());
 
     async function loadData() {
       loading.value = true;
@@ -205,6 +238,7 @@ createApp({
 
     function applyView() {
       const kw = search.value.trim().toLowerCase();
+      const dir = dirFilter.value;
       const typeOk = n => activeTypes.value.includes(n.type);
       const scopeOk = n => {
         if (scope.value === "all") return true;
@@ -214,6 +248,18 @@ createApp({
       };
       let nodes = fullData.nodes.filter(n => typeOk(n) && scopeOk(n));
       let links = fullData.links.filter(l => nodes.some(n => n.name === l.source) && nodes.some(n => n.name === l.target));
+      // 方向筛选：命中该方向的技能/概念节点，再扩展其一跳邻居
+      if (dir) {
+        const matched = new Set(nodes.filter(n =>
+          n.direction === dir || n.name === "概念-" + dir ||
+          (n.category || "").includes(dir)).map(n => n.name));
+        links.forEach(l => {
+          if (matched.has(l.source)) matched.add(l.target);
+          if (matched.has(l.target)) matched.add(l.source);
+        });
+        nodes = nodes.filter(n => matched.has(n.name));
+        links = links.filter(l => matched.has(l.source) && matched.has(l.target));
+      }
       if (kw) {
         const matched = new Set(nodes.filter(n => n.name.toLowerCase().includes(kw) || (n.category || "").toLowerCase().includes(kw)).map(n => n.name));
         const keep = new Set(matched);
@@ -230,9 +276,8 @@ createApp({
       return {
         tooltip: {
           backgroundColor: "#fff", borderColor: "#e4e7ed", textStyle: { color: "#303133", fontSize: 12 },
-          formatter: p => p.dataType === "node"
-            ? `<b>${p.data.name}</b><br/>类型: ${p.data.type}　分类: ${p.data.category || "-"}<br/>连接数: ${p.data.degree}<br/><span style="color:#909399">点击节点查看详情</span>`
-            : `${p.data.source} → ${p.data.target}`
+          formatter: p => p.dataType === "node" ? nodeTip(p.data)
+            : `<b>${p.data.source}</b> —[${p.data.rel || "引用"}]→ <b>${p.data.target}</b>`
         },
         legend: [],
         series: [{
@@ -253,7 +298,7 @@ createApp({
       i >= 0 ? activeTypes.value.splice(i, 1) : activeTypes.value.push(name);
       applyView();
     }
-    function resetView() { search.value = ""; activeTypes.value = Object.keys(TYPES); scope.value = "all"; applyView(); }
+    function resetView() { search.value = ""; dirFilter.value = ""; activeTypes.value = Object.keys(TYPES); scope.value = "all"; applyView(); }
 
     function exportImage() {
       if (!chart) return;
@@ -278,9 +323,9 @@ createApp({
     const tagType = t => TAGS[t] || "info";
     onMounted(loadData);
 
-    return { loading, search, scope, activeTypes, selected, shown, fullData, drawer, showLabels,
-             previewHtml, previewLoading, previewTitle, previewUrl, TYPES, Refresh, Download, Search,
-             countType, toggleType, resetView, applyView, exportImage, openPreview, tagType, loadData };
+    return { loading, search, scope, activeTypes, selected, shown, fullData, drawer, showLabels, dirFilter,
+             previewHtml, previewLoading, previewTitle, previewUrl, TYPES, RELS, Refresh, Download, Search,
+             countType, directions, toggleType, resetView, applyView, exportImage, openPreview, tagType, loadData };
   }
 }).use(ElementPlus).mount("#app");
 </script>

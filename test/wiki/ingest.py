@@ -45,7 +45,14 @@ def llm_chat(prompt: str) -> str:
 
 # ---------------- 页面内容生成 ----------------
 def course_page(c: dict, skills: list[str]) -> str:
-    lines = [f"'''《{c['name']}》'''是一门{c['type']}，课程编号 {c['code']}，共 {c['credit']} 学分。", ""]
+    meta = [m for m in (f"课程编号 {c['code']}" if c.get("code") else None,
+                        f"{c['credit']} 学分" if c.get("credit") else None,
+                        f"主讲：{c['teacher']}" if c.get("teacher") else None) if m]
+    head = f"'''《{c['name']}》'''是一门{c.get('type', '课程')}"
+    head += f"（{'，'.join(meta)}）。" if meta else "。"
+    lines = [head, ""]
+    if c.get("description"):
+        lines += [c["description"], ""]
     lines += ["== 教授的技能 ==", ""]
     lines += [f"* [[{s}]]" for s in skills] or ["* 暂无"]
     lines += ["", "[[Category:课程]]"]
@@ -53,7 +60,15 @@ def course_page(c: dict, skills: list[str]) -> str:
 
 
 def skill_page(s: dict, courses: list[str], positions: list[str]) -> str:
-    lines = [f"'''{s['name']}''' 属于「{s['category']}」方向（层级 {s['level']}）。", ""]
+    aliases = []
+    if s.get("aliases"):
+        try:
+            aliases = json.loads(s["aliases"]) if isinstance(s["aliases"], str) else s["aliases"]
+        except json.JSONDecodeError:
+            aliases = []
+    lines = [f"'''{s['name']}''' 属于「{s['category']}」方向。", ""]
+    if aliases:
+        lines += ["别名：" + "、".join(aliases), ""]
     lines += ["== 开设课程 ==", ""]
     lines += [f"* [[{c}]]" for c in courses] or ["* 暂无"]
     lines += ["", "== 岗位要求 ==", ""]
@@ -63,8 +78,16 @@ def skill_page(s: dict, courses: list[str], positions: list[str]) -> str:
 
 
 def position_page(p: dict, companies: list, skills: list[str]) -> str:
-    comp_txt = "、".join(f"{c}（{city}）" for c, city in companies)
+    comp_txt = "、".join(f"{c}（{city}）" if city else c for c, city in companies)
     lines = [f"'''{p['title']}''' —— 招聘企业：{comp_txt}。", ""]
+    extra = []
+    if p.get("recs"):
+        extra.append(f"样本招聘记录 {p['recs']} 条")
+    if p.get("smax"):
+        extra.append(f"薪资区间约 {p['smin']:.0f}k–{p['smax']:.0f}k")
+    if extra:
+        lines.insert(1, "统计口径：" + "，" .join(extra) + "（来自爬虫岗位库）。")
+        lines.insert(2, "")
     lines += ["== 任职技能要求 ==", ""]
     lines += [f"* [[{s}]]" for s in skills] or ["* 暂无"]
     lines += ["", "[[Category:岗位]]"]
@@ -84,20 +107,33 @@ def concept_page(cat: str, sids: list[str], jobs: list[str], courses: list[str])
 
 # ---------------- 标题消歧 ----------------
 def build_titles(data: dict) -> tuple[dict, dict, dict]:
-    """返回 (课程标题表, 技能标题表, 岗位标题->合并信息表)。"""
+    """返回 (课程标题表, 技能标题表, 岗位标题->合并信息表)。
+
+    MediaWiki 一个标题只能有一个页面，三类实体可能互相重名：
+      - 技能 vs 职位标题（如「自动化测试」「大模型算法」既是技能又是岗位）→ 技能加「（技能）」
+      - 课程 vs 技能/职位（如课程「机器学习」和技能「机器学习」）→ 课程加「（课程）」
+      - 岗位标题永不加后缀（聚合页，名称保持与旧库职位标题一致）
+    """
+    position_titles = {p["title"] for p in data["positions"]}
     course_names = {c["name"] for c in data["courses"]}
-    course_titles, skill_titles = {}, {}
     skill_name_set = {s["name"] for s in data["skills"]}
+    course_titles, skill_titles = {}, {}
     for c in data["courses"]:
-        course_titles[c["id"]] = (f"{c['name']}（课程）"
-                                  if c["name"] in skill_name_set else c["name"])
+        conflict = c["name"] in skill_name_set or c["name"] in position_titles
+        course_titles[c["id"]] = f"{c['name']}（课程）" if conflict else c["name"]
     for s in data["skills"]:
-        skill_titles[s["id"]] = s["name"]
-    # 同名岗位合并
-    positions = defaultdict(lambda: {"companies": [], "skills": set(), "id": None})
+        # 课程已让位（加后缀），技能只需避开职位标题
+        conflict = s["name"] in position_titles
+        skill_titles[s["id"]] = f"{s['name']}（技能）" if conflict else s["name"]
+    # 同名岗位合并（同名不同公司多行；recs/薪资取该职位任一行的值）
+    positions = defaultdict(lambda: {"companies": [], "skills": set(), "id": None,
+                                     "recs": 0, "smin": 0, "smax": 0})
     for p in data["positions"]:
         e = positions[p["title"]]
         e["id"] = p["id"]
+        e["recs"] = p.get("recs", 0) or e["recs"]
+        e["smin"] = p.get("salary_min", 0) or e["smin"]
+        e["smax"] = p.get("salary_max", 0) or e["smax"]
         e["companies"].append((p["company"], p["city"]))
     for r in data["position_skill"]:
         title = next(x["title"] for x in data["positions"] if x["id"] == r["position_id"])
@@ -185,7 +221,8 @@ def run_ingest(use_llm: bool | None = None) -> dict:
 
     for title, e in positions.items():
         mw.edit_page(title, position_page(
-            {"title": title}, e["companies"],
+            {"title": title, "recs": e["recs"], "smin": e["smin"], "smax": e["smax"]},
+            e["companies"],
             [skill_titles[s] for s in sorted(e["skills"]) if s in skill_titles]))
         n += 1
 

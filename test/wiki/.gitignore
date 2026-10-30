@@ -11,8 +11,10 @@ php/
 mediawiki-1.43.1/
 # MediaWiki 的 SQLite 数据目录（站点数据库、缓存）
 mw-data/
-# 业务源数据库 source.db（seed_data.py 可重建）
-data/
+# 本地 SQLite 运行库（seed_data.py 从快照重建）；
+# 快照 pcscp_snapshot.json 是源数据，必须入库，不忽略
+data/*
+!data/pcscp_snapshot.json
 # composer 可执行文件（3.7MB）
 composer.phar
 

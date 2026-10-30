@@ -6,20 +6,25 @@
 ## 这个模块做了什么
 
 ```
-课程/技能/岗位种子数据 (SQLite)
-        │ seed_data.py
+归档项目 MySQL 库 pcscp（一次性）
+        │ export_pcscp.py（仅 pcscp 数据变更时重跑）
+        ▼
+data/pcscp_snapshot.json 数据快照  ← 随仓库提交，运行期不依赖 MySQL
+        │ seed_data.py 载入本地 SQLite
         ▼
 LLM 两步摄取（分析 → 生成）        ← ingest.py，无 Ollama 时自动降级规则模式
         │  为每个实体写一个 Wiki 页面：
         │  页面正文用 [[双链]] 标注关系，[[Category:xx]] 标注类型
         ▼
-MediaWiki 1.43.1 站点（80+ 页面）   ← 便携 PHP 8.3 内置服务器托管，127.0.0.1:8089
+MediaWiki 1.43.1 站点（100+ 页面）  ← 便携 PHP 8.3 内置服务器托管，127.0.0.1:8089
         │ build_graph.py 调 MediaWiki API 拉取全部页面及内部链接
         ▼
 graph_data.json → graph.html       ← Vue3 + Element Plus + ECharts 力导向图
 ```
 
 **图谱不是手工录入的**：`[[双链]]` 就是边，分类就是节点颜色，数据变了重跑脚本即可刷新。
+当前数据为 **pcscp 库真实数据**（10 课程 / 64 技能 / 13 方向 / 25 个头部职位），与归档项目比对：
+课程节点召回 100%、课程-技能边召回 96%、岗位标题召回 100%。
 
 ## 快速开始
 
@@ -44,7 +49,9 @@ python build_graph.py
 
 | 文件/目录 | 作用 |
 |---|---|
-| `seed_data.py` | 22 课程 / 42 技能 / 14 岗位种子数据写入 SQLite |
+| `export_pcscp.py` | 一次性导出 pcscp 库 → `data/pcscp_snapshot.json` 快照（数据变更时才重跑） |
+| `data/pcscp_snapshot.json` | **业务数据快照**（随仓库提交，运行期不依赖 MySQL） |
+| `seed_data.py` | 快照 → 本地 SQLite（可重复执行，全量重建） |
 | `ingest.py` | 两步摄取：LLM 分析 + 生成带双链的 Wiki 页面（含同名消歧、陈旧页清理） |
 | `build_graph.py` | 拉取全站页面链接，生成图谱数据并自动部署前端 |
 | `mw_client.py` | MediaWiki API 客户端（登录/建页/查询，纯 Python 标准库） |
@@ -78,8 +85,8 @@ git push
 
 - **左右/上下滚动条**：图谱画布 2400×1700，只有图谱展示区滚动，顶栏和左栏固定
 - 顶栏切换视图（课程-技能 / 岗位-技能 / 全部）、刷新、导出图片
-- 左栏：统计卡片、图例点击过滤、搜索聚焦子图、节点详情
-- 点击节点「查看 Wiki 页面」→ 抽屉实时预览 MediaWiki 页面内容
+- 左栏：统计卡片、图例点击过滤、关系连线图例（教授/要求/聚合）、搜索聚焦、**方向筛选子图**、节点详情（含主讲教师/学分/薪资区间/招聘样本/别名）
+- 悬停节点/边显示业务信息 tooltip；点击节点「查看 Wiki 页面」→ 抽屉实时预览 MediaWiki 页面内容
 
 ## 技术栈（全部开源免费）
 

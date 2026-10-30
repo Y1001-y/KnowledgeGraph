@@ -1,0 +1,2526 @@
+{
+ "meta": {
+  "source": "MySQL pcscp（归档 vue+springboot 项目库）",
+  "exported_at": "2026-10-30 11:59:01",
+  "top_positions": 25,
+  "top_companies": 5,
+  "counts": {
+   "courses": 10,
+   "skills": 64,
+   "directions": 13,
+   "positions": 25,
+   "course_skill": 27,
+   "position_skill": 114
+  }
+ },
+ "directions": [
+  "AI/算法技术",
+  "产品能力",
+  "产品设计",
+  "前端框架",
+  "后端框架",
+  "大数据技术",
+  "开发工具",
+  "数据分析工具",
+  "数据库",
+  "测试技术",
+  "编程语言",
+  "计算机基础",
+  "软件工程"
+ ],
+ "courses": [
+  {
+   "id": 5,
+   "name": "Java程序开发",
+   "code": "T10102",
+   "type": "专业核心课程",
+   "credit": 2.0,
+   "teacher": "张三",
+   "description": "123345"
+  },
+  {
+   "id": 18,
+   "name": "Web应用开发",
+   "code": "KC01000485",
+   "type": "专业核心课程",
+   "credit": 4.0,
+   "teacher": "张老师",
+   "description": "Web开发基础课程"
+  },
+  {
+   "id": 19,
+   "name": "Linux基础",
+   "code": "SC102",
+   "type": "专业基础课程",
+   "credit": 3.0,
+   "teacher": "王老师",
+   "description": "使用Linux基本语法"
+  },
+  {
+   "id": 20,
+   "name": "数据库语言",
+   "code": "T10011",
+   "type": "专业选修课程",
+   "credit": 4.0,
+   "teacher": "李老师",
+   "description": "aa"
+  },
+  {
+   "id": 31,
+   "name": "计算机与人工智能导论",
+   "code": "KC01004572",
+   "type": "公共基础课",
+   "credit": 2.0,
+   "teacher": "赵老师",
+   "description": "本课程面向计算机科学及相关专业学生，旨在系统介绍计算机科学基础与人工智能核心理论。课程以\"理论+实践\"双轨并进的模式推进，前半段聚焦计算机组成、编程基础与算法思维，后半段深入人工智能的数学原理、经典模型与前沿应用。\n\n学生将在每周2学时理论课+2学时实验课的节奏中，完成从\"会用计算机\"到\"理解计算机"
+  },
+  {
+   "id": 32,
+   "name": "计算机组成原理与系统结构",
+   "code": "KC01002373",
+   "type": "专业基础课程",
+   "credit": 2.0,
+   "teacher": "刘老师",
+   "description": "计算机组成原理与系统结构是一门研究计算机系统内部组成及其工作机制的核心课程，主要讲解从逻辑电路 → CPU → 存储系统 → 指令执行 → 系统结构优化的完整体系，使学生理解程序在硬件上的执行过程，并具备基础的系统级分析与设计能力。"
+  },
+  {
+   "id": 33,
+   "name": "面向对象程序设计Ⅰ",
+   "code": "KC01000810",
+   "type": "专业基础课程",
+   "credit": 3.0,
+   "teacher": "孙老师",
+   "description": "这门课教你如何用“对象”的方式组织代码，把程序从“函数堆叠”升级为结构清晰、可维护的大型系统。"
+  },
+  {
+   "id": 34,
+   "name": "计算机网络基础",
+   "code": "KC01000607",
+   "type": "专业基础课程",
+   "credit": 2.0,
+   "teacher": "周老师",
+   "description": "这门课讲的是：数据是如何从你的电脑传到全世界的，包括协议、传输机制和网络架构。"
+  },
+  {
+   "id": 35,
+   "name": "软件工程",
+   "code": "KC01000514",
+   "type": "专业核心课程",
+   "credit": 2.0,
+   "teacher": "王老师",
+   "description": "该课程将教会你如何把一个软件从0做到上线，包括需求、设计、开发、测试、维护的全过程，软件过程是“做项目的方法论”。"
+  },
+  {
+   "id": 36,
+   "name": "软件测试与质量保证",
+   "code": "KC01002367",
+   "type": "专业核心课程",
+   "credit": 2.0,
+   "teacher": "黄老师",
+   "description": "这门课关注的是：如何系统地发现问题，并保证软件质量，不仅是“找bug”，更是“防bug”。"
+  }
+ ],
+ "skills": [
+  {
+   "id": 2,
+   "name": "Java",
+   "aliases": [
+    "Java开发",
+    "Java编程",
+    "J2EE"
+   ],
+   "level": 2,
+   "category": "编程语言"
+  },
+  {
+   "id": 3,
+   "name": "Python",
+   "aliases": [
+    "Python开发",
+    "Py",
+    "Python编程"
+   ],
+   "level": 2,
+   "category": "编程语言"
+  },
+  {
+   "id": 4,
+   "name": "JavaScript",
+   "aliases": [
+    "JS",
+    "ES6",
+    "ECMAScript",
+    "JS开发"
+   ],
+   "level": 2,
+   "category": "编程语言"
+  },
+  {
+   "id": 5,
+   "name": "C++",
+   "aliases": [
+    "CPP",
+    "C Plus Plus",
+    "C++开发"
+   ],
+   "level": 2,
+   "category": "编程语言"
+  },
+  {
+   "id": 31,
+   "name": "JavaScript",
+   "aliases": [],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 32,
+   "name": "CSS",
+   "aliases": [],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 30,
+   "name": "HTML",
+   "aliases": [
+    "html"
+   ],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 7,
+   "name": "Vue.js",
+   "aliases": [
+    "Vue",
+    "Vue3",
+    "Vue2",
+    "Vue框架"
+   ],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 8,
+   "name": "React",
+   "aliases": [
+    "React.js",
+    "ReactJS",
+    "React开发"
+   ],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 9,
+   "name": "Angular",
+   "aliases": [
+    "AngularJS",
+    "Ng",
+    "Angular开发"
+   ],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 130,
+   "name": "TypeScript",
+   "aliases": [
+    "TS",
+    "TypeScript开发",
+    "TS开发"
+   ],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 131,
+   "name": "CSS",
+   "aliases": [
+    "CSS3",
+    "前端基础",
+    "网页开发"
+   ],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 132,
+   "name": "Webpack",
+   "aliases": [
+    "Webpack打包",
+    "模块打包",
+    "前端构建"
+   ],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 133,
+   "name": "小程序开发",
+   "aliases": [
+    "微信小程序",
+    "小程序",
+    "Mini Program"
+   ],
+   "level": 2,
+   "category": "前端框架"
+  },
+  {
+   "id": 29,
+   "name": "MyBatis",
+   "aliases": [
+    "MyBatis"
+   ],
+   "level": 2,
+   "category": "后端框架"
+  },
+  {
+   "id": 11,
+   "name": "Spring Boot",
+   "aliases": [
+    "SpringBoot",
+    "SB",
+    "Spring框架"
+   ],
+   "level": 2,
+   "category": "后端框架"
+  },
+  {
+   "id": 12,
+   "name": "Spring Cloud",
+   "aliases": [
+    "SpringCloud",
+    "微服务框架"
+   ],
+   "level": 2,
+   "category": "后端框架"
+  },
+  {
+   "id": 14,
+   "name": "Node.js",
+   "aliases": [
+    "Node",
+    "Nodejs",
+    "NodeJS"
+   ],
+   "level": 2,
+   "category": "后端框架"
+  },
+  {
+   "id": 190,
+   "name": "Web全栈开发",
+   "aliases": [
+    "全栈开发",
+    "Full Stack",
+    "前后端开发",
+    "Web开发",
+    "全栈工程师"
+   ],
+   "level": 2,
+   "category": "后端框架"
+  },
+  {
+   "id": 16,
+   "name": "MySQL",
+   "aliases": [
+    "Mysql",
+    "MySQL数据库",
+    "SQL"
+   ],
+   "level": 2,
+   "category": "数据库"
+  },
+  {
+   "id": 17,
+   "name": "Redis",
+   "aliases": [
+    "缓存",
+    "Redis缓存",
+    "NoSQL"
+   ],
+   "level": 2,
+   "category": "数据库"
+  },
+  {
+   "id": 18,
+   "name": "MongoDB",
+   "aliases": [
+    "Mongo",
+    "文档数据库"
+   ],
+   "level": 2,
+   "category": "数据库"
+  },
+  {
+   "id": 19,
+   "name": "PostgreSQL",
+   "aliases": [
+    "PG",
+    "Postgres"
+   ],
+   "level": 2,
+   "category": "数据库"
+  },
+  {
+   "id": 21,
+   "name": "Git",
+   "aliases": [
+    "版本控制",
+    "Git工具",
+    "GitHub"
+   ],
+   "level": 2,
+   "category": "开发工具"
+  },
+  {
+   "id": 22,
+   "name": "Docker",
+   "aliases": [
+    "容器",
+    "容器化",
+    "Docker容器"
+   ],
+   "level": 2,
+   "category": "开发工具"
+  },
+  {
+   "id": 23,
+   "name": "Linux",
+   "aliases": [
+    "Linux系统",
+    "Unix",
+    "操作系统"
+   ],
+   "level": 2,
+   "category": "开发工具"
+  },
+  {
+   "id": 193,
+   "name": "大模型算法",
+   "aliases": [],
+   "level": 2,
+   "category": "AI/算法技术"
+  },
+  {
+   "id": 101,
+   "name": "机器学习",
+   "aliases": [
+    "ML",
+    "Machine Learning",
+    "机器学习算法"
+   ],
+   "level": 2,
+   "category": "AI/算法技术"
+  },
+  {
+   "id": 102,
+   "name": "深度学习",
+   "aliases": [
+    "Deep Learning",
+    "DL",
+    "神经网络"
+   ],
+   "level": 2,
+   "category": "AI/算法技术"
+  },
+  {
+   "id": 103,
+   "name": "自然语言处理",
+   "aliases": [
+    "NLP",
+    "自然语言",
+    "文本处理"
+   ],
+   "level": 2,
+   "category": "AI/算法技术"
+  },
+  {
+   "id": 104,
+   "name": "计算机视觉",
+   "aliases": [
+    "CV",
+    "图像处理",
+    "视觉AI"
+   ],
+   "level": 2,
+   "category": "AI/算法技术"
+  },
+  {
+   "id": 105,
+   "name": "TensorFlow",
+   "aliases": [
+    "TF",
+    "TensorFlow框架",
+    "TF框架"
+   ],
+   "level": 2,
+   "category": "AI/算法技术"
+  },
+  {
+   "id": 106,
+   "name": "PyTorch",
+   "aliases": [
+    "PyTorch框架",
+    "torch",
+    "PyTorch深度学习"
+   ],
+   "level": 2,
+   "category": "AI/算法技术"
+  },
+  {
+   "id": 111,
+   "name": "Axure",
+   "aliases": [
+    "Axure RP",
+    "原型设计",
+    "Axure原型"
+   ],
+   "level": 2,
+   "category": "产品设计"
+  },
+  {
+   "id": 112,
+   "name": "Figma",
+   "aliases": [
+    "Figma设计",
+    "UI设计",
+    "在线设计工具"
+   ],
+   "level": 2,
+   "category": "产品设计"
+  },
+  {
+   "id": 113,
+   "name": "墨刀",
+   "aliases": [
+    "MockingBot",
+    "原型工具",
+    "在线原型"
+   ],
+   "level": 2,
+   "category": "产品设计"
+  },
+  {
+   "id": 192,
+   "name": "客户成功",
+   "aliases": [],
+   "level": 2,
+   "category": "产品能力"
+  },
+  {
+   "id": 121,
+   "name": "需求分析",
+   "aliases": [
+    "需求管理",
+    "需求调研",
+    "需求挖掘"
+   ],
+   "level": 2,
+   "category": "产品能力"
+  },
+  {
+   "id": 122,
+   "name": "用户研究",
+   "aliases": [
+    "用户调研",
+    "UX研究",
+    "用户体验研究"
+   ],
+   "level": 2,
+   "category": "产品能力"
+  },
+  {
+   "id": 123,
+   "name": "数据分析",
+   "aliases": [
+    "数据分析能力",
+    "数据驱动",
+    "BI分析"
+   ],
+   "level": 2,
+   "category": "产品能力"
+  },
+  {
+   "id": 124,
+   "name": "项目管理",
+   "aliases": [
+    "Project Management",
+    "项目协调",
+    "项目推进"
+   ],
+   "level": 2,
+   "category": "产品能力"
+  },
+  {
+   "id": 125,
+   "name": "敏捷开发",
+   "aliases": [
+    "Agile",
+    "Scrum",
+    "敏捷方法"
+   ],
+   "level": 2,
+   "category": "产品能力"
+  },
+  {
+   "id": 141,
+   "name": "SQL",
+   "aliases": [
+    "SQL查询",
+    "数据库查询",
+    "Structured Query Language"
+   ],
+   "level": 2,
+   "category": "数据分析工具"
+  },
+  {
+   "id": 142,
+   "name": "Excel",
+   "aliases": [
+    "Excel数据分析",
+    "电子表格",
+    "Excel高级"
+   ],
+   "level": 2,
+   "category": "数据分析工具"
+  },
+  {
+   "id": 143,
+   "name": "Tableau",
+   "aliases": [
+    "Tableau可视化",
+    "数据可视化",
+    "BI报表"
+   ],
+   "level": 2,
+   "category": "数据分析工具"
+  },
+  {
+   "id": 144,
+   "name": "SPSS",
+   "aliases": [
+    "统计分析",
+    "SPSS分析",
+    "统计软件"
+   ],
+   "level": 2,
+   "category": "数据分析工具"
+  },
+  {
+   "id": 151,
+   "name": "Hadoop",
+   "aliases": [
+    "Hadoop生态",
+    "HDFS",
+    "MapReduce"
+   ],
+   "level": 2,
+   "category": "大数据技术"
+  },
+  {
+   "id": 152,
+   "name": "Spark",
+   "aliases": [
+    "Apache Spark",
+    "Spark计算",
+    "大数据计算"
+   ],
+   "level": 2,
+   "category": "大数据技术"
+  },
+  {
+   "id": 153,
+   "name": "Hive",
+   "aliases": [
+    "Hive数据仓库",
+    "数据仓库",
+    "Hive SQL"
+   ],
+   "level": 2,
+   "category": "大数据技术"
+  },
+  {
+   "id": 154,
+   "name": "Kafka",
+   "aliases": [
+    "Apache Kafka",
+    "消息队列",
+    "Kafka消息"
+   ],
+   "level": 2,
+   "category": "大数据技术"
+  },
+  {
+   "id": 161,
+   "name": "计算机组成原理",
+   "aliases": [
+    "计算机系统结构",
+    "计算机硬件基础",
+    "Computer Organization",
+    "计算机体系结构"
+   ],
+   "level": 2,
+   "category": "计算机基础"
+  },
+  {
+   "id": 162,
+   "name": "计算机网络",
+   "aliases": [
+    "网络基础",
+    "网络原理",
+    "Computer Networks",
+    "网络协议",
+    "TCP/IP"
+   ],
+   "level": 2,
+   "category": "计算机基础"
+  },
+  {
+   "id": 163,
+   "name": "操作系统",
+   "aliases": [
+    "OS",
+    "Operating System",
+    "系统编程",
+    "Linux内核"
+   ],
+   "level": 2,
+   "category": "计算机基础"
+  },
+  {
+   "id": 164,
+   "name": "数据结构与算法",
+   "aliases": [
+    "算法基础",
+    "数据结构",
+    "Algorithm",
+    "DSA",
+    "算法设计"
+   ],
+   "level": 2,
+   "category": "计算机基础"
+  },
+  {
+   "id": 165,
+   "name": "人工智能导论",
+   "aliases": [
+    "AI导论",
+    "人工智能基础",
+    "AI Introduction",
+    "智能系统"
+   ],
+   "level": 2,
+   "category": "计算机基础"
+  },
+  {
+   "id": 171,
+   "name": "自动化测试",
+   "aliases": [
+    "自动化测试框架",
+    "Test Automation",
+    "UI自动化",
+    "接口自动化"
+   ],
+   "level": 2,
+   "category": "测试技术"
+  },
+  {
+   "id": 172,
+   "name": "功能测试",
+   "aliases": [
+    "软件功能测试",
+    "黑盒测试",
+    "手工测试",
+    "系统测试"
+   ],
+   "level": 2,
+   "category": "测试技术"
+  },
+  {
+   "id": 173,
+   "name": "测试管理",
+   "aliases": [
+    "测试项目管理",
+    "测试流程管理",
+    "质量管理",
+    "测试团队管理"
+   ],
+   "level": 2,
+   "category": "测试技术"
+  },
+  {
+   "id": 174,
+   "name": "性能测试",
+   "aliases": [
+    "压力测试",
+    "负载测试",
+    "JMeter",
+    "LoadRunner",
+    "性能优化"
+   ],
+   "level": 2,
+   "category": "测试技术"
+  },
+  {
+   "id": 181,
+   "name": "软件项目管理",
+   "aliases": [
+    "项目管理",
+    "Project Management",
+    "PM",
+    "项目计划",
+    "项目控制"
+   ],
+   "level": 2,
+   "category": "软件工程"
+  },
+  {
+   "id": 182,
+   "name": "软件过程模型",
+   "aliases": [
+    "开发模型",
+    "瀑布模型",
+    "迭代开发",
+    "DevOps",
+    "持续集成"
+   ],
+   "level": 2,
+   "category": "软件工程"
+  },
+  {
+   "id": 183,
+   "name": "需求工程",
+   "aliases": [
+    "需求管理",
+    "需求规格",
+    "需求变更",
+    "SRS"
+   ],
+   "level": 2,
+   "category": "软件工程"
+  },
+  {
+   "id": 184,
+   "name": "软件设计",
+   "aliases": [
+    "系统设计",
+    "架构设计",
+    "详细设计",
+    "UML",
+    "设计模式"
+   ],
+   "level": 2,
+   "category": "软件工程"
+  },
+  {
+   "id": 185,
+   "name": "软件质量保证",
+   "aliases": [
+    "SQA",
+    "质量保障",
+    "代码审查",
+    "评审",
+    "质量度量"
+   ],
+   "level": 2,
+   "category": "软件工程"
+  }
+ ],
+ "positions": [
+  {
+   "id": 1,
+   "title": "Java开发工程师",
+   "company": "华为技术",
+   "city": "马鞍山",
+   "recs": 915,
+   "salary_min": 4.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 2,
+   "title": "Java开发工程师",
+   "company": "去哪儿",
+   "city": "马鞍山",
+   "recs": 915,
+   "salary_min": 4.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 3,
+   "title": "Java开发工程师",
+   "company": "链家",
+   "city": "马鞍山",
+   "recs": 915,
+   "salary_min": 4.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 4,
+   "title": "Java开发工程师",
+   "company": "字节跳动",
+   "city": "马鞍山",
+   "recs": 915,
+   "salary_min": 4.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 5,
+   "title": "Java开发工程师",
+   "company": "百度",
+   "city": "马鞍山",
+   "recs": 915,
+   "salary_min": 4.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 7,
+   "title": "前端开发工程师",
+   "company": "同程旅行",
+   "city": "苏州",
+   "recs": 197,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 8,
+   "title": "前端开发工程师",
+   "company": "京北方",
+   "city": "苏州",
+   "recs": 197,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 9,
+   "title": "前端开发工程师",
+   "company": "上海枢瀚信息科技",
+   "city": "苏州",
+   "recs": 197,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 10,
+   "title": "前端开发工程师",
+   "company": "上海原典环保科技",
+   "city": "盐城",
+   "recs": 197,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 11,
+   "title": "前端开发工程师",
+   "company": "鼎锐软件",
+   "city": "苏州",
+   "recs": 197,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 13,
+   "title": "软件工程师",
+   "company": "启晟微电子科技",
+   "city": "淮安",
+   "recs": 112,
+   "salary_min": 3.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 14,
+   "title": "软件工程师",
+   "company": "江苏阿尔法药业集团",
+   "city": "宿迁",
+   "recs": 112,
+   "salary_min": 3.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 15,
+   "title": "软件工程师",
+   "company": "医时空",
+   "city": "南京",
+   "recs": 112,
+   "salary_min": 3.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 16,
+   "title": "软件工程师",
+   "company": "无锡未来光智能装...",
+   "city": "无锡",
+   "recs": 112,
+   "salary_min": 3.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 17,
+   "title": "软件工程师",
+   "company": "朗高养老",
+   "city": "无锡",
+   "recs": 112,
+   "salary_min": 3.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 19,
+   "title": "软件测试工程师",
+   "company": "江西飞尚科技有限...",
+   "city": "镇江",
+   "recs": 100,
+   "salary_min": 4.4,
+   "salary_max": 30.0
+  },
+  {
+   "id": 20,
+   "title": "软件测试工程师",
+   "company": "徐工矿业机械有限公司",
+   "city": "徐州",
+   "recs": 100,
+   "salary_min": 4.4,
+   "salary_max": 30.0
+  },
+  {
+   "id": 21,
+   "title": "软件测试工程师",
+   "company": "苏州无界妙控科技",
+   "city": "苏州",
+   "recs": 100,
+   "salary_min": 4.4,
+   "salary_max": 30.0
+  },
+  {
+   "id": 22,
+   "title": "软件测试工程师",
+   "company": "江苏中安智信通信科技",
+   "city": "苏州",
+   "recs": 100,
+   "salary_min": 4.4,
+   "salary_max": 30.0
+  },
+  {
+   "id": 23,
+   "title": "软件测试工程师",
+   "company": "神州博海",
+   "city": "苏州",
+   "recs": 100,
+   "salary_min": 4.4,
+   "salary_max": 30.0
+  },
+  {
+   "id": 25,
+   "title": "全栈工程师",
+   "company": "盛虹",
+   "city": "苏州",
+   "recs": 97,
+   "salary_min": 1.0,
+   "salary_max": 65.0
+  },
+  {
+   "id": 26,
+   "title": "全栈工程师",
+   "company": "法则万物",
+   "city": "苏州",
+   "recs": 97,
+   "salary_min": 1.0,
+   "salary_max": 65.0
+  },
+  {
+   "id": 27,
+   "title": "全栈工程师",
+   "company": "海途国际",
+   "city": "无锡",
+   "recs": 97,
+   "salary_min": 1.0,
+   "salary_max": 65.0
+  },
+  {
+   "id": 28,
+   "title": "全栈工程师",
+   "company": "江苏鼎轩软件",
+   "city": "无锡",
+   "recs": 97,
+   "salary_min": 1.0,
+   "salary_max": 65.0
+  },
+  {
+   "id": 29,
+   "title": "全栈工程师",
+   "company": "上海华澄水润科技",
+   "city": "无锡",
+   "recs": 97,
+   "salary_min": 1.0,
+   "salary_max": 65.0
+  },
+  {
+   "id": 31,
+   "title": "算法工程师",
+   "company": "上海如是纵横信息系统",
+   "city": "无锡",
+   "recs": 85,
+   "salary_min": 2.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 32,
+   "title": "算法工程师",
+   "company": "锂云科技",
+   "city": "无锡",
+   "recs": 85,
+   "salary_min": 2.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 33,
+   "title": "算法工程师",
+   "company": "海斯凯尔",
+   "city": "无锡",
+   "recs": 85,
+   "salary_min": 2.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 34,
+   "title": "算法工程师",
+   "company": "欧慧能源",
+   "city": "无锡",
+   "recs": 85,
+   "salary_min": 2.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 35,
+   "title": "算法工程师",
+   "company": "聚目科技",
+   "city": "无锡",
+   "recs": 85,
+   "salary_min": 2.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 37,
+   "title": "软件开发工程师",
+   "company": "鹏鼎控股",
+   "city": "淮安",
+   "recs": 73,
+   "salary_min": 3.0,
+   "salary_max": 35.0
+  },
+  {
+   "id": 38,
+   "title": "软件开发工程师",
+   "company": "纽康数研",
+   "city": "南通",
+   "recs": 73,
+   "salary_min": 3.0,
+   "salary_max": 35.0
+  },
+  {
+   "id": 39,
+   "title": "软件开发工程师",
+   "company": "网商精益",
+   "city": "镇江",
+   "recs": 73,
+   "salary_min": 3.0,
+   "salary_max": 35.0
+  },
+  {
+   "id": 40,
+   "title": "软件开发工程师",
+   "company": "华为技术有限公司",
+   "city": "南京",
+   "recs": 73,
+   "salary_min": 3.0,
+   "salary_max": 35.0
+  },
+  {
+   "id": 41,
+   "title": "软件开发工程师",
+   "company": "玖熠",
+   "city": "无锡",
+   "recs": 73,
+   "salary_min": 3.0,
+   "salary_max": 35.0
+  },
+  {
+   "id": 43,
+   "title": "全栈开发工程师",
+   "company": "国顺智能",
+   "city": "徐州",
+   "recs": 58,
+   "salary_min": 6.0,
+   "salary_max": 60.0
+  },
+  {
+   "id": 44,
+   "title": "全栈开发工程师",
+   "company": "江苏天创科技",
+   "city": "苏州",
+   "recs": 58,
+   "salary_min": 6.0,
+   "salary_max": 60.0
+  },
+  {
+   "id": 45,
+   "title": "全栈开发工程师",
+   "company": "希玛石油",
+   "city": "镇江",
+   "recs": 58,
+   "salary_min": 6.0,
+   "salary_max": 60.0
+  },
+  {
+   "id": 46,
+   "title": "全栈开发工程师",
+   "company": "易维视",
+   "city": "无锡",
+   "recs": 58,
+   "salary_min": 6.0,
+   "salary_max": 60.0
+  },
+  {
+   "id": 47,
+   "title": "全栈开发工程师",
+   "company": "享乐到家",
+   "city": "无锡",
+   "recs": 58,
+   "salary_min": 6.0,
+   "salary_max": 60.0
+  },
+  {
+   "id": 49,
+   "title": "后端开发工程师",
+   "company": "魔法原子",
+   "city": "苏州",
+   "recs": 46,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 50,
+   "title": "后端开发工程师",
+   "company": "宇动源",
+   "city": "无锡",
+   "recs": 46,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 51,
+   "title": "后端开发工程师",
+   "company": "达邦管理有限公司",
+   "city": "无锡",
+   "recs": 46,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 52,
+   "title": "后端开发工程师",
+   "company": "无锡隶首",
+   "city": "无锡",
+   "recs": 46,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 53,
+   "title": "后端开发工程师",
+   "company": "求之科技",
+   "city": "无锡",
+   "recs": 46,
+   "salary_min": 2.0,
+   "salary_max": 45.0
+  },
+  {
+   "id": 55,
+   "title": "AI工程师",
+   "company": "南京中电变压器",
+   "city": "南京",
+   "recs": 40,
+   "salary_min": 0.9,
+   "salary_max": 40.0
+  },
+  {
+   "id": 56,
+   "title": "AI工程师",
+   "company": "非诚勿扰资管",
+   "city": "无锡",
+   "recs": 40,
+   "salary_min": 0.9,
+   "salary_max": 40.0
+  },
+  {
+   "id": 57,
+   "title": "AI工程师",
+   "company": "台铃科技",
+   "city": "无锡",
+   "recs": 40,
+   "salary_min": 0.9,
+   "salary_max": 40.0
+  },
+  {
+   "id": 58,
+   "title": "AI工程师",
+   "company": "千客赢集团",
+   "city": "无锡",
+   "recs": 40,
+   "salary_min": 0.9,
+   "salary_max": 40.0
+  },
+  {
+   "id": 59,
+   "title": "AI工程师",
+   "company": "恒田企业",
+   "city": "无锡",
+   "recs": 40,
+   "salary_min": 0.9,
+   "salary_max": 40.0
+  },
+  {
+   "id": 61,
+   "title": "AI应用工程师",
+   "company": "月晕而风科技有限公司",
+   "city": "盐城",
+   "recs": 32,
+   "salary_min": 5.0,
+   "salary_max": 35.2
+  },
+  {
+   "id": 62,
+   "title": "AI应用工程师",
+   "company": "普实软件",
+   "city": "苏州",
+   "recs": 32,
+   "salary_min": 5.0,
+   "salary_max": 35.2
+  },
+  {
+   "id": 63,
+   "title": "AI应用工程师",
+   "company": "恒田企业",
+   "city": "无锡",
+   "recs": 32,
+   "salary_min": 5.0,
+   "salary_max": 35.2
+  },
+  {
+   "id": 64,
+   "title": "AI应用工程师",
+   "company": "领秀",
+   "city": "南京",
+   "recs": 32,
+   "salary_min": 5.0,
+   "salary_max": 35.2
+  },
+  {
+   "id": 65,
+   "title": "AI应用工程师",
+   "company": "道致科技",
+   "city": "南京",
+   "recs": 32,
+   "salary_min": 5.0,
+   "salary_max": 35.2
+  },
+  {
+   "id": 67,
+   "title": "ai算法工程师",
+   "company": "蜂巢能源",
+   "city": "无锡",
+   "recs": 31,
+   "salary_min": 3.3,
+   "salary_max": 60.0
+  },
+  {
+   "id": 68,
+   "title": "ai算法工程师",
+   "company": "无锡九方科技有限公司",
+   "city": "无锡",
+   "recs": 31,
+   "salary_min": 3.3,
+   "salary_max": 60.0
+  },
+  {
+   "id": 69,
+   "title": "ai算法工程师",
+   "company": "祥生",
+   "city": "无锡",
+   "recs": 31,
+   "salary_min": 3.3,
+   "salary_max": 60.0
+  },
+  {
+   "id": 70,
+   "title": "ai算法工程师",
+   "company": "天津艾迪研医药科技",
+   "city": "南京",
+   "recs": 31,
+   "salary_min": 3.3,
+   "salary_max": 60.0
+  },
+  {
+   "id": 71,
+   "title": "ai算法工程师",
+   "company": "飞搏智慧",
+   "city": "南京",
+   "recs": 31,
+   "salary_min": 3.3,
+   "salary_max": 60.0
+  },
+  {
+   "id": 73,
+   "title": "大模型算法工程师",
+   "company": "苏州同达合创",
+   "city": "苏州",
+   "recs": 28,
+   "salary_min": 5.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 74,
+   "title": "大模型算法工程师",
+   "company": "无锡麦塔斯",
+   "city": "无锡",
+   "recs": 28,
+   "salary_min": 5.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 75,
+   "title": "大模型算法工程师",
+   "company": "无锡览山信息科技",
+   "city": "无锡",
+   "recs": 28,
+   "salary_min": 5.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 76,
+   "title": "大模型算法工程师",
+   "company": "华勤技术股份有限公司",
+   "city": "无锡",
+   "recs": 28,
+   "salary_min": 5.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 77,
+   "title": "大模型算法工程师",
+   "company": "初鑫科技",
+   "city": "南京",
+   "recs": 28,
+   "salary_min": 5.0,
+   "salary_max": 70.0
+  },
+  {
+   "id": 79,
+   "title": "AI应用开发工程师",
+   "company": "亚信科技",
+   "city": "南京",
+   "recs": 26,
+   "salary_min": 3.3,
+   "salary_max": 55.0
+  },
+  {
+   "id": 80,
+   "title": "AI应用开发工程师",
+   "company": "芷间科技",
+   "city": "南京",
+   "recs": 26,
+   "salary_min": 3.3,
+   "salary_max": 55.0
+  },
+  {
+   "id": 81,
+   "title": "AI应用开发工程师",
+   "company": "江苏春雨文化教育集团",
+   "city": "南京",
+   "recs": 26,
+   "salary_min": 3.3,
+   "salary_max": 55.0
+  },
+  {
+   "id": 82,
+   "title": "AI应用开发工程师",
+   "company": "华夏天信研究院",
+   "city": "徐州",
+   "recs": 26,
+   "salary_min": 3.3,
+   "salary_max": 55.0
+  },
+  {
+   "id": 83,
+   "title": "AI应用开发工程师",
+   "company": "蓝翼智能",
+   "city": "苏州",
+   "recs": 26,
+   "salary_min": 3.3,
+   "salary_max": 55.0
+  },
+  {
+   "id": 85,
+   "title": "Python开发工程师",
+   "company": "福阳科技",
+   "city": "苏州",
+   "recs": 25,
+   "salary_min": 5.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 86,
+   "title": "Python开发工程师",
+   "company": "富深协通",
+   "city": "常州",
+   "recs": 25,
+   "salary_min": 5.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 87,
+   "title": "Python开发工程师",
+   "company": "急速国际",
+   "city": "苏州",
+   "recs": 25,
+   "salary_min": 5.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 88,
+   "title": "Python开发工程师",
+   "company": "安徽中品",
+   "city": "无锡",
+   "recs": 25,
+   "salary_min": 5.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 89,
+   "title": "Python开发工程师",
+   "company": "赛意信息",
+   "city": "常州",
+   "recs": 25,
+   "salary_min": 5.0,
+   "salary_max": 40.0
+  },
+  {
+   "id": 91,
+   "title": "自动化测试",
+   "company": "润和软件",
+   "city": "南京",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 50.0
+  },
+  {
+   "id": 92,
+   "title": "自动化测试",
+   "company": "苏州无界妙控科技",
+   "city": "苏州",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 50.0
+  },
+  {
+   "id": 93,
+   "title": "自动化测试",
+   "company": "绛门科技",
+   "city": "南京",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 50.0
+  },
+  {
+   "id": 94,
+   "title": "自动化测试",
+   "company": "亚派自动化",
+   "city": "无锡",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 50.0
+  },
+  {
+   "id": 95,
+   "title": "自动化测试",
+   "company": "无锡科艾思信息",
+   "city": "无锡",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 50.0
+  },
+  {
+   "id": 97,
+   "title": "AI开发工程师",
+   "company": "祥生",
+   "city": "无锡",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 98,
+   "title": "AI开发工程师",
+   "company": "一氪咨询",
+   "city": "无锡",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 99,
+   "title": "AI开发工程师",
+   "company": "思酷",
+   "city": "南京",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 100,
+   "title": "AI开发工程师",
+   "company": "常州丽智软件科技",
+   "city": "常州",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 101,
+   "title": "AI开发工程师",
+   "company": "哈斯云数",
+   "city": "连云港",
+   "recs": 23,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 103,
+   "title": "研发工程师",
+   "company": "鹏鼎控股",
+   "city": "淮安",
+   "recs": 23,
+   "salary_min": 4.0,
+   "salary_max": 22.0
+  },
+  {
+   "id": 104,
+   "title": "研发工程师",
+   "company": "森源展示",
+   "city": "南通",
+   "recs": 23,
+   "salary_min": 4.0,
+   "salary_max": 22.0
+  },
+  {
+   "id": 105,
+   "title": "研发工程师",
+   "company": "无锡晟昇高科有限公司",
+   "city": "无锡",
+   "recs": 23,
+   "salary_min": 4.0,
+   "salary_max": 22.0
+  },
+  {
+   "id": 106,
+   "title": "研发工程师",
+   "company": "江苏天基北斗医疗科技",
+   "city": "无锡",
+   "recs": 23,
+   "salary_min": 4.0,
+   "salary_max": 22.0
+  },
+  {
+   "id": 107,
+   "title": "研发工程师",
+   "company": "无锡感知极光精密制造",
+   "city": "无锡",
+   "recs": 23,
+   "salary_min": 4.0,
+   "salary_max": 22.0
+  },
+  {
+   "id": 109,
+   "title": "高级全栈工程师",
+   "company": "太初",
+   "city": "无锡",
+   "recs": 19,
+   "salary_min": 4.4,
+   "salary_max": 40.0
+  },
+  {
+   "id": 110,
+   "title": "高级全栈工程师",
+   "company": "无锡飞之辰软件",
+   "city": "无锡",
+   "recs": 19,
+   "salary_min": 4.4,
+   "salary_max": 40.0
+  },
+  {
+   "id": 111,
+   "title": "高级全栈工程师",
+   "company": "杭州智汇星空科技",
+   "city": "无锡",
+   "recs": 19,
+   "salary_min": 4.4,
+   "salary_max": 40.0
+  },
+  {
+   "id": 112,
+   "title": "高级全栈工程师",
+   "company": "江荣合聚信息(上...",
+   "city": "南京",
+   "recs": 19,
+   "salary_min": 4.4,
+   "salary_max": 40.0
+  },
+  {
+   "id": 113,
+   "title": "高级全栈工程师",
+   "company": "常州攀升互联网信...",
+   "city": "常州",
+   "recs": 19,
+   "salary_min": 4.4,
+   "salary_max": 40.0
+  },
+  {
+   "id": 115,
+   "title": "开发工程师",
+   "company": "南京恒宁",
+   "city": "南京",
+   "recs": 18,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 116,
+   "title": "开发工程师",
+   "company": "非凸徐州",
+   "city": "徐州",
+   "recs": 18,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 117,
+   "title": "开发工程师",
+   "company": "江苏华文数字技术有限公司",
+   "city": "徐州",
+   "recs": 18,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 118,
+   "title": "开发工程师",
+   "company": "集萃苏科思科技",
+   "city": "苏州",
+   "recs": 18,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 119,
+   "title": "开发工程师",
+   "company": "俪曼家居",
+   "city": "苏州",
+   "recs": 18,
+   "salary_min": 3.3,
+   "salary_max": 40.0
+  },
+  {
+   "id": 121,
+   "title": "测试技术员",
+   "company": "思格新能源",
+   "city": "南通",
+   "recs": 18,
+   "salary_min": 4.0,
+   "salary_max": 12.0
+  },
+  {
+   "id": 122,
+   "title": "测试技术员",
+   "company": "栖息地",
+   "city": "常州",
+   "recs": 18,
+   "salary_min": 4.0,
+   "salary_max": 12.0
+  },
+  {
+   "id": 123,
+   "title": "测试技术员",
+   "company": "弘元新材料(徐州)",
+   "city": "徐州",
+   "recs": 18,
+   "salary_min": 4.0,
+   "salary_max": 12.0
+  },
+  {
+   "id": 124,
+   "title": "测试技术员",
+   "company": "八匹马超导",
+   "city": "苏州",
+   "recs": 18,
+   "salary_min": 4.0,
+   "salary_max": 12.0
+  },
+  {
+   "id": 125,
+   "title": "测试技术员",
+   "company": "苏州襄行电器",
+   "city": "苏州",
+   "recs": 18,
+   "salary_min": 4.0,
+   "salary_max": 12.0
+  },
+  {
+   "id": 127,
+   "title": "大模型算法",
+   "company": "苏州鼎级",
+   "city": "苏州",
+   "recs": 17,
+   "salary_min": 3.0,
+   "salary_max": 52.8
+  },
+  {
+   "id": 128,
+   "title": "大模型算法",
+   "company": "无锡平行时空科技有限公司",
+   "city": "无锡",
+   "recs": 17,
+   "salary_min": 3.0,
+   "salary_max": 52.8
+  },
+  {
+   "id": 129,
+   "title": "大模型算法",
+   "company": "华勤技术股份有限公司",
+   "city": "无锡",
+   "recs": 17,
+   "salary_min": 3.0,
+   "salary_max": 52.8
+  },
+  {
+   "id": 130,
+   "title": "大模型算法",
+   "company": "众茂科技",
+   "city": "淮安",
+   "recs": 17,
+   "salary_min": 3.0,
+   "salary_max": 52.8
+  },
+  {
+   "id": 131,
+   "title": "大模型算法",
+   "company": "晟察数据信息",
+   "city": "徐州",
+   "recs": 17,
+   "salary_min": 3.0,
+   "salary_max": 52.8
+  },
+  {
+   "id": 133,
+   "title": "产品经理",
+   "company": "字节跳动",
+   "city": "北京",
+   "recs": 15,
+   "salary_min": 15.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 134,
+   "title": "产品经理",
+   "company": "阿里巴巴",
+   "city": "杭州",
+   "recs": 15,
+   "salary_min": 15.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 135,
+   "title": "产品经理",
+   "company": "腾讯",
+   "city": "深圳",
+   "recs": 15,
+   "salary_min": 15.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 136,
+   "title": "产品经理",
+   "company": "美团",
+   "city": "北京",
+   "recs": 15,
+   "salary_min": 15.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 137,
+   "title": "产品经理",
+   "company": "京东",
+   "city": "北京",
+   "recs": 15,
+   "salary_min": 15.0,
+   "salary_max": 50.0
+  },
+  {
+   "id": 139,
+   "title": "高级软件测试工程师",
+   "company": "思源电气股份有限公司",
+   "city": "南京",
+   "recs": 13,
+   "salary_min": 6.0,
+   "salary_max": 30.0
+  },
+  {
+   "id": 140,
+   "title": "高级软件测试工程师",
+   "company": "常州众森音数字科技",
+   "city": "常州",
+   "recs": 13,
+   "salary_min": 6.0,
+   "salary_max": 30.0
+  },
+  {
+   "id": 141,
+   "title": "高级软件测试工程师",
+   "company": "集萃赋源科技有限公司",
+   "city": "苏州",
+   "recs": 13,
+   "salary_min": 6.0,
+   "salary_max": 30.0
+  },
+  {
+   "id": 142,
+   "title": "高级软件测试工程师",
+   "company": "上海星空计划汽车科技",
+   "city": "苏州",
+   "recs": 13,
+   "salary_min": 6.0,
+   "salary_max": 30.0
+  },
+  {
+   "id": 143,
+   "title": "高级软件测试工程师",
+   "company": "苏州光格",
+   "city": "苏州",
+   "recs": 13,
+   "salary_min": 6.0,
+   "salary_max": 30.0
+  },
+  {
+   "id": 145,
+   "title": "软件开发",
+   "company": "南京明程网络科技",
+   "city": "泰州",
+   "recs": 13,
+   "salary_min": 3.0,
+   "salary_max": 16.0
+  },
+  {
+   "id": 146,
+   "title": "软件开发",
+   "company": "南京雷超科技有限公司",
+   "city": "南京",
+   "recs": 13,
+   "salary_min": 3.0,
+   "salary_max": 16.0
+  },
+  {
+   "id": 147,
+   "title": "软件开发",
+   "company": "同心结",
+   "city": "淮安",
+   "recs": 13,
+   "salary_min": 3.0,
+   "salary_max": 16.0
+  },
+  {
+   "id": 148,
+   "title": "软件开发",
+   "company": "海南君豪信息科技...",
+   "city": "苏州",
+   "recs": 13,
+   "salary_min": 3.0,
+   "salary_max": 16.0
+  },
+  {
+   "id": 149,
+   "title": "软件开发",
+   "company": "卫民药房",
+   "city": "宿迁",
+   "recs": 13,
+   "salary_min": 3.0,
+   "salary_max": 16.0
+  }
+ ],
+ "course_skill": [
+  {
+   "course_id": 19,
+   "skill_id": 22
+  },
+  {
+   "course_id": 19,
+   "skill_id": 23
+  },
+  {
+   "course_id": 20,
+   "skill_id": 16
+  },
+  {
+   "course_id": 20,
+   "skill_id": 17
+  },
+  {
+   "course_id": 20,
+   "skill_id": 18
+  },
+  {
+   "course_id": 31,
+   "skill_id": 101
+  },
+  {
+   "course_id": 31,
+   "skill_id": 141
+  },
+  {
+   "course_id": 31,
+   "skill_id": 3
+  },
+  {
+   "course_id": 31,
+   "skill_id": 102
+  },
+  {
+   "course_id": 31,
+   "skill_id": 5
+  },
+  {
+   "course_id": 34,
+   "skill_id": 162
+  },
+  {
+   "course_id": 32,
+   "skill_id": 5
+  },
+  {
+   "course_id": 32,
+   "skill_id": 161
+  },
+  {
+   "course_id": 32,
+   "skill_id": 163
+  },
+  {
+   "course_id": 35,
+   "skill_id": 181
+  },
+  {
+   "course_id": 35,
+   "skill_id": 183
+  },
+  {
+   "course_id": 35,
+   "skill_id": 185
+  },
+  {
+   "course_id": 36,
+   "skill_id": 170
+  },
+  {
+   "course_id": 36,
+   "skill_id": 172
+  },
+  {
+   "course_id": 36,
+   "skill_id": 174
+  },
+  {
+   "course_id": 18,
+   "skill_id": 32
+  },
+  {
+   "course_id": 18,
+   "skill_id": 31
+  },
+  {
+   "course_id": 18,
+   "skill_id": 30
+  },
+  {
+   "course_id": 18,
+   "skill_id": 7
+  },
+  {
+   "course_id": 33,
+   "skill_id": 2
+  },
+  {
+   "course_id": 5,
+   "skill_id": 2
+  },
+  {
+   "course_id": 5,
+   "skill_id": 11
+  }
+ ],
+ "position_skill": [
+  {
+   "position_id": 1,
+   "skill_id": 2
+  },
+  {
+   "position_id": 1,
+   "skill_id": 11
+  },
+  {
+   "position_id": 1,
+   "skill_id": 12
+  },
+  {
+   "position_id": 1,
+   "skill_id": 16
+  },
+  {
+   "position_id": 1,
+   "skill_id": 17
+  },
+  {
+   "position_id": 1,
+   "skill_id": 22
+  },
+  {
+   "position_id": 1,
+   "skill_id": 27
+  },
+  {
+   "position_id": 7,
+   "skill_id": 4
+  },
+  {
+   "position_id": 7,
+   "skill_id": 7
+  },
+  {
+   "position_id": 7,
+   "skill_id": 8
+  },
+  {
+   "position_id": 7,
+   "skill_id": 14
+  },
+  {
+   "position_id": 7,
+   "skill_id": 17
+  },
+  {
+   "position_id": 7,
+   "skill_id": 21
+  },
+  {
+   "position_id": 7,
+   "skill_id": 31
+  },
+  {
+   "position_id": 7,
+   "skill_id": 32
+  },
+  {
+   "position_id": 7,
+   "skill_id": 130
+  },
+  {
+   "position_id": 7,
+   "skill_id": 131
+  },
+  {
+   "position_id": 7,
+   "skill_id": 132
+  },
+  {
+   "position_id": 7,
+   "skill_id": 133
+  },
+  {
+   "position_id": 13,
+   "skill_id": 2
+  },
+  {
+   "position_id": 13,
+   "skill_id": 3
+  },
+  {
+   "position_id": 13,
+   "skill_id": 14
+  },
+  {
+   "position_id": 13,
+   "skill_id": 190
+  },
+  {
+   "position_id": 19,
+   "skill_id": 170
+  },
+  {
+   "position_id": 19,
+   "skill_id": 171
+  },
+  {
+   "position_id": 25,
+   "skill_id": 2
+  },
+  {
+   "position_id": 25,
+   "skill_id": 190
+  },
+  {
+   "position_id": 31,
+   "skill_id": 3
+  },
+  {
+   "position_id": 31,
+   "skill_id": 5
+  },
+  {
+   "position_id": 31,
+   "skill_id": 101
+  },
+  {
+   "position_id": 31,
+   "skill_id": 102
+  },
+  {
+   "position_id": 31,
+   "skill_id": 103
+  },
+  {
+   "position_id": 31,
+   "skill_id": 104
+  },
+  {
+   "position_id": 31,
+   "skill_id": 105
+  },
+  {
+   "position_id": 31,
+   "skill_id": 106
+  },
+  {
+   "position_id": 31,
+   "skill_id": 141
+  },
+  {
+   "position_id": 31,
+   "skill_id": 152
+  },
+  {
+   "position_id": 31,
+   "skill_id": 193
+  },
+  {
+   "position_id": 37,
+   "skill_id": 2
+  },
+  {
+   "position_id": 37,
+   "skill_id": 3
+  },
+  {
+   "position_id": 37,
+   "skill_id": 14
+  },
+  {
+   "position_id": 37,
+   "skill_id": 170
+  },
+  {
+   "position_id": 37,
+   "skill_id": 190
+  },
+  {
+   "position_id": 43,
+   "skill_id": 2
+  },
+  {
+   "position_id": 43,
+   "skill_id": 7
+  },
+  {
+   "position_id": 43,
+   "skill_id": 8
+  },
+  {
+   "position_id": 43,
+   "skill_id": 16
+  },
+  {
+   "position_id": 43,
+   "skill_id": 17
+  },
+  {
+   "position_id": 43,
+   "skill_id": 22
+  },
+  {
+   "position_id": 43,
+   "skill_id": 190
+  },
+  {
+   "position_id": 49,
+   "skill_id": 2
+  },
+  {
+   "position_id": 49,
+   "skill_id": 3
+  },
+  {
+   "position_id": 49,
+   "skill_id": 11
+  },
+  {
+   "position_id": 49,
+   "skill_id": 14
+  },
+  {
+   "position_id": 49,
+   "skill_id": 16
+  },
+  {
+   "position_id": 49,
+   "skill_id": 17
+  },
+  {
+   "position_id": 49,
+   "skill_id": 18
+  },
+  {
+   "position_id": 49,
+   "skill_id": 23
+  },
+  {
+   "position_id": 55,
+   "skill_id": 2
+  },
+  {
+   "position_id": 55,
+   "skill_id": 3
+  },
+  {
+   "position_id": 55,
+   "skill_id": 101
+  },
+  {
+   "position_id": 55,
+   "skill_id": 102
+  },
+  {
+   "position_id": 55,
+   "skill_id": 193
+  },
+  {
+   "position_id": 61,
+   "skill_id": 3
+  },
+  {
+   "position_id": 61,
+   "skill_id": 101
+  },
+  {
+   "position_id": 61,
+   "skill_id": 102
+  },
+  {
+   "position_id": 61,
+   "skill_id": 190
+  },
+  {
+   "position_id": 61,
+   "skill_id": 193
+  },
+  {
+   "position_id": 67,
+   "skill_id": 102
+  },
+  {
+   "position_id": 67,
+   "skill_id": 193
+  },
+  {
+   "position_id": 73,
+   "skill_id": 102
+  },
+  {
+   "position_id": 73,
+   "skill_id": 193
+  },
+  {
+   "position_id": 79,
+   "skill_id": 2
+  },
+  {
+   "position_id": 79,
+   "skill_id": 3
+  },
+  {
+   "position_id": 79,
+   "skill_id": 101
+  },
+  {
+   "position_id": 79,
+   "skill_id": 190
+  },
+  {
+   "position_id": 79,
+   "skill_id": 193
+  },
+  {
+   "position_id": 85,
+   "skill_id": 3
+  },
+  {
+   "position_id": 85,
+   "skill_id": 9
+  },
+  {
+   "position_id": 85,
+   "skill_id": 16
+  },
+  {
+   "position_id": 85,
+   "skill_id": 17
+  },
+  {
+   "position_id": 91,
+   "skill_id": 3
+  },
+  {
+   "position_id": 91,
+   "skill_id": 171
+  },
+  {
+   "position_id": 97,
+   "skill_id": 2
+  },
+  {
+   "position_id": 97,
+   "skill_id": 3
+  },
+  {
+   "position_id": 97,
+   "skill_id": 101
+  },
+  {
+   "position_id": 97,
+   "skill_id": 193
+  },
+  {
+   "position_id": 103,
+   "skill_id": 2
+  },
+  {
+   "position_id": 103,
+   "skill_id": 3
+  },
+  {
+   "position_id": 109,
+   "skill_id": 14
+  },
+  {
+   "position_id": 109,
+   "skill_id": 190
+  },
+  {
+   "position_id": 115,
+   "skill_id": 2
+  },
+  {
+   "position_id": 115,
+   "skill_id": 3
+  },
+  {
+   "position_id": 115,
+   "skill_id": 170
+  },
+  {
+   "position_id": 115,
+   "skill_id": 190
+  },
+  {
+   "position_id": 121,
+   "skill_id": 172
+  },
+  {
+   "position_id": 121,
+   "skill_id": 174
+  },
+  {
+   "position_id": 127,
+   "skill_id": 101
+  },
+  {
+   "position_id": 127,
+   "skill_id": 193
+  },
+  {
+   "position_id": 133,
+   "skill_id": 111
+  },
+  {
+   "position_id": 133,
+   "skill_id": 112
+  },
+  {
+   "position_id": 133,
+   "skill_id": 113
+  },
+  {
+   "position_id": 133,
+   "skill_id": 121
+  },
+  {
+   "position_id": 133,
+   "skill_id": 122
+  },
+  {
+   "position_id": 133,
+   "skill_id": 123
+  },
+  {
+   "position_id": 133,
+   "skill_id": 124
+  },
+  {
+   "position_id": 133,
+   "skill_id": 125
+  },
+  {
+   "position_id": 133,
+   "skill_id": 141
+  },
+  {
+   "position_id": 133,
+   "skill_id": 142
+  },
+  {
+   "position_id": 139,
+   "skill_id": 170
+  },
+  {
+   "position_id": 139,
+   "skill_id": 171
+  },
+  {
+   "position_id": 145,
+   "skill_id": 2
+  },
+  {
+   "position_id": 145,
+   "skill_id": 3
+  },
+  {
+   "position_id": 145,
+   "skill_id": 190
+  }
+ ]
+}
