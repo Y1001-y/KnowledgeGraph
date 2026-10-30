@@ -1,0 +1,39 @@
+# ============================================================
+#  test/wiki 提交规则：只提交「源码」，运行时依赖与产物不入库
+#  仓库里只保留代码（约 3MB），克隆后用脚本重新装出完整环境
+#  注意：git 不支持行尾注释，注释必须单独成行
+# ============================================================
+
+# ---- 运行时依赖（可重新下载/安装）----
+# 便携 PHP 8.3（88MB，windows.php.net 下载）
+php/
+# MediaWiki 发行包 + vendor 依赖（206MB）
+mediawiki-1.43.1/
+# MediaWiki 的 SQLite 数据目录（站点数据库、缓存）
+mw-data/
+# 业务源数据库 source.db（seed_data.py 可重建）
+data/
+# composer 可执行文件（3.7MB）
+composer.phar
+
+# ---- 本机相关产物 ----
+# server.log 等运行日志
+*.log
+# 本机代理（SteamTools/Watt）根证书合并包，勿公开
+php-ca-bundle.crt
+ca-extra.crt
+# 图谱数据，build_graph.py 重新生成
+graph_data.json
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ---- 编辑器/系统 ----
+.idea/
+.vscode/
+Thumbs.db
+desktop.ini

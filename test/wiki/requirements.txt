@@ -1,0 +1,3 @@
+# 本项目 Python 部分零第三方依赖（仅标准库 urllib / sqlite3 / http.server）
+# 如需可选增强可自行安装：
+# requests>=2.31

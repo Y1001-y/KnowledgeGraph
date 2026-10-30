@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识图谱 - LLM Wiki 自动编译</title>
+<link rel="stylesheet" href="element-plus.css">
+<script src="echarts.min.js"></script>
+<script src="vue.global.prod.js"></script>
+<script src="element-plus.js"></script>
+<script src="element-icons.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #f0f2f5; height: 100vh; overflow: hidden; }
+  #app { height: 100vh; display: flex; flex-direction: column; }
+  [v-cloak] { display: none; }
+
+  .top-bar { height: 60px; background: #fff; border-bottom: 1px solid #e4e7ed; display: flex; align-items: center; padding: 0 20px; gap: 16px; box-shadow: 0 1px 4px rgba(0,21,41,.08); z-index: 10; }
+  .top-bar .logo { width: 34px; height: 34px; border-radius: 8px; background: #409eff; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; flex: none; }
+  .top-bar .title { font-size: 16px; font-weight: 600; color: #303133; }
+  .top-bar .subtitle { font-size: 12px; color: #909399; margin-top: 2px; }
+  .top-bar .spacer { flex: 1; }
+
+  .body-area { flex: 1; display: flex; min-height: 0; }
+  .aside { width: 340px; flex: none; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: #f0f2f5; }
+  .main-area { flex: 1; padding: 16px 16px 16px 0; min-width: 0; display: flex; }
+
+  .el-card { border-radius: 10px; }
+  .graph-card { flex: 1; display: flex; flex-direction: column; }
+  .graph-card .el-card__body { flex: 1; padding: 10px; display: flex; min-height: 0; overflow: hidden; }
+
+  /* 图谱滚动区：仅此区域滚动，顶栏与左栏固定 */
+  .graph-scroll { flex: 1; overflow: auto; border-radius: 8px; background: #fafbfc; min-height: 0; }
+  .graph-scroll::-webkit-scrollbar { width: 12px; height: 12px; }
+  .graph-scroll::-webkit-scrollbar-thumb { background: #c0c4cc; border-radius: 6px; border: 3px solid #fafbfc; }
+  .graph-scroll::-webkit-scrollbar-thumb:hover { background: #909399; }
+  .graph-scroll::-webkit-scrollbar-track { background: #f5f7fa; border-radius: 6px; }
+  .graph-scroll::-webkit-scrollbar-corner { background: #f5f7fa; }
+  #chart { width: 2400px; height: 1700px; flex: none; }
+
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 13px; color: #606266; transition: background .15s; }
+  .legend-item:hover { background: #f5f7fa; }
+  .legend-item.off { opacity: .4; }
+  .legend-item .dot { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+  .legend-item .cnt { margin-left: auto; font-size: 12px; color: #909399; }
+
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-cell { background: #f5f7fa; border-radius: 8px; padding: 10px 12px; }
+  .stat-cell .num { font-size: 20px; font-weight: 600; color: #303133; }
+  .stat-cell .lbl { font-size: 12px; color: #909399; margin-top: 2px; }
+
+  .detail-name { font-size: 15px; font-weight: 600; color: #303133; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .kv { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 6px 0; border-bottom: 1px dashed #ebeef5; }
+  .kv:last-child { border-bottom: none; }
+  .kv .k { color: #909399; }
+  .kv .v { color: #303133; max-width: 170px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .wiki-preview { line-height: 1.8; font-size: 14px; color: #303133; }
+  .wiki-preview img { max-width: 100%; }
+  .wiki-preview table { border-collapse: collapse; }
+  .wiki-preview table td, .wiki-preview table th { border: 1px solid #dcdfe6; padding: 4px 8px; }
+  .drawer-link { display: block; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div id="app" v-cloak>
+  <!-- 顶栏 -->
+  <div class="top-bar">
+    <div class="logo">◈</div>
+    <div>
+      <div class="title">课程 · 技能 · 岗位 知识图谱</div>
+      <div class="subtitle">LLM Wiki 自动编译自 MediaWiki 页面内部链接</div>
+    </div>
+    <div class="spacer"></div>
+    <el-radio-group v-model="scope" size="default" style="margin-right:10px">
+      <el-radio-button value="course_skill">课程-技能</el-radio-button>
+      <el-radio-button value="position_skill">岗位-技能</el-radio-button>
+      <el-radio-button value="all">全部</el-radio-button>
+    </el-radio-group>
+    <el-button :icon="Refresh" @click="loadData" :loading="loading">刷新图谱</el-button>
+    <el-button type="primary" :icon="Download" @click="exportImage">导出图片</el-button>
+  </div>
+
+  <div class="body-area">
+    <!-- 左侧信息栏 -->
+    <aside class="aside">
+      <el-card shadow="never">
+        <template #header><b style="font-size:14px">图谱统计</b></template>
+        <div class="stat-grid">
+          <div class="stat-cell"><div class="num">{{ shown.nodes.length }}</div><div class="lbl">当前节点</div></div>
+          <div class="stat-cell"><div class="num">{{ shown.links.length }}</div><div class="lbl">当前关系</div></div>
+          <div class="stat-cell"><div class="num">{{ countType('课程') }}</div><div class="lbl">课程</div></div>
+          <div class="stat-cell"><div class="num">{{ countType('技能') }}</div><div class="lbl">技能</div></div>
+          <div class="stat-cell"><div class="num">{{ countType('岗位') }}</div><div class="lbl">岗位</div></div>
+          <div class="stat-cell"><div class="num">{{ countType('概念') }}</div><div class="lbl">概念主题</div></div>
+        </div>
+      </el-card>
+
+      <el-card shadow="never">
+        <template #header><b style="font-size:14px">图例（点击过滤）</b></template>
+        <div v-for="(c, name) in TYPES" :key="name" class="legend-item" :class="{ off: !activeTypes.includes(name) }" @click="toggleType(name)">
+          <span class="dot" :style="{ background: c }"></span>
+          <span>{{ name }}</span>
+          <span class="cnt">{{ countType(name) }}</span>
+        </div>
+      </el-card>
+
+      <el-card shadow="never">
+        <template #header><b style="font-size:14px">快速定位</b></template>
+        <el-input v-model="search" placeholder="搜索课程 / 技能 / 岗位..." clearable @keyup.enter="applyView" @clear="applyView">
+          <template #append>
+            <el-button :icon="Search" @click="applyView"></el-button>
+          </template>
+        </el-input>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+          <span style="font-size:13px;color:#606266">显示全部节点名称</span>
+          <el-switch v-model="showLabels" @change="applyView"></el-switch>
+        </div>
+        <el-button style="width:100%;margin-top:12px" plain @click="resetView">显示全部</el-button>
+      </el-card>
+
+      <el-card shadow="never" v-if="selected">
+        <template #header><b style="font-size:14px">节点详情</b></template>
+        <div class="detail-name">
+          <span class="dot" :style="{ background: (TYPES[selected.type]||'#888780'), width:'11px', height:'11px', borderRadius:'50%', display:'inline-block' }"></span>
+          {{ selected.name }}
+        </div>
+        <div class="kv"><span class="k">类型</span><span class="v"><el-tag size="small" :type="tagType(selected.type)">{{ selected.type }}</el-tag></span></div>
+        <div class="kv"><span class="k">分类</span><span class="v">{{ selected.category || '-' }}</span></div>
+        <div class="kv"><span class="k">连接数</span><span class="v">{{ selected.degree }}</span></div>
+        <el-button class="drawer-link" type="primary" plain style="width:100%" @click="openPreview(selected)">查看 Wiki 页面</el-button>
+      </el-card>
+    </aside>
+
+    <!-- 图谱主体 -->
+    <main class="main-area">
+      <el-card shadow="never" class="graph-card">
+        <div class="graph-scroll" v-loading="loading" element-loading-text="图谱加载中...">
+          <div id="chart"></div>
+        </div>
+      </el-card>
+    </main>
+  </div>
+
+  <!-- Wiki 页面预览抽屉 -->
+  <el-drawer v-model="drawer" :title="'Wiki 页面 · ' + (previewTitle || '')" size="46%">
+    <div v-if="previewLoading" v-loading="true" style="min-height:200px"></div>
+    <div v-else>
+      <div class="wiki-preview" v-html="previewHtml"></div>
+      <a v-if="previewUrl" class="drawer-link" :href="previewUrl" target="_blank">
+        <el-button type="primary" plain style="width:100%">在 MediaWiki 中打开完整页面 →</el-button>
+      </a>
+    </div>
+  </el-drawer>
+</div>
+
+<script>
+const { createApp, ref, reactive, onMounted, nextTick } = Vue;
+const { ElMessage } = ElementPlus;
+const Refresh = ElementPlusIconsVue.Refresh, Download = ElementPlusIconsVue.Download, Search = ElementPlusIconsVue.Search;
+
+const TYPES = { "课程": "#409eff", "技能": "#67c23a", "岗位": "#f56c6c", "概念": "#e6a23c", "索引": "#909399", "报告": "#b4b2a9", "其他": "#888780" };
+const TAGS = { "课程": "primary", "技能": "success", "岗位": "danger", "概念": "warning" };
+
+createApp({
+  setup() {
+    const loading = ref(true);
+    const search = ref("");
+    const scope = ref("all");
+    const activeTypes = ref(Object.keys(TYPES));
+    const selected = ref(null);
+    const fullData = reactive({ nodes: [], links: [] });
+    const shown = reactive({ nodes: [], links: [] });
+    const drawer = ref(false);
+    const showLabels = ref(false);
+    const previewHtml = ref(""), previewLoading = ref(false), previewTitle = ref(""), previewUrl = ref("");
+    let chart = null;
+
+    const countType = t => fullData.nodes.filter(n => n.type === t).length;
+
+    async function loadData() {
+      loading.value = true;
+      try {
+        const res = await fetch("graph_data.json?t=" + Date.now());
+        const data = await res.json();
+        fullData.nodes = data.nodes; fullData.links = data.links;
+        await nextTick(); initChart(); applyView(); centerScroll();
+      } catch (e) {
+        ElMessage.error("图谱数据加载失败，请先运行 build_graph.py");
+      } finally { loading.value = false; }
+    }
+
+    function initChart() {
+      const el = document.getElementById("chart");
+      chart = echarts.init(el);
+      chart.on("click", p => { if (p.dataType === "node") selected.value = p.data; });
+    }
+
+    // 图谱画布(2400x1700)大于可视区，加载后自动滚到画布中心
+    function centerScroll() {
+      const el = document.querySelector(".graph-scroll");
+      el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+      el.scrollTop = (el.scrollHeight - el.clientHeight) / 2;
+    }
+
+    function applyView() {
+      const kw = search.value.trim().toLowerCase();
+      const typeOk = n => activeTypes.value.includes(n.type);
+      const scopeOk = n => {
+        if (scope.value === "all") return true;
+        const keepCourse = scope.value === "course_skill";
+        return n.type === "技能" || n.type === "概念" ||
+               (keepCourse ? n.type === "课程" : n.type === "岗位");
+      };
+      let nodes = fullData.nodes.filter(n => typeOk(n) && scopeOk(n));
+      let links = fullData.links.filter(l => nodes.some(n => n.name === l.source) && nodes.some(n => n.name === l.target));
+      if (kw) {
+        const matched = new Set(nodes.filter(n => n.name.toLowerCase().includes(kw) || (n.category || "").toLowerCase().includes(kw)).map(n => n.name));
+        const keep = new Set(matched);
+        links = links.filter(l => matched.has(l.source) || matched.has(l.target));
+        links.forEach(l => { keep.add(l.source); keep.add(l.target); });
+        nodes = nodes.filter(n => keep.has(n.name));
+        links = links.filter(l => keep.has(l.source) && keep.has(l.target));
+      }
+      shown.nodes = nodes; shown.links = links;
+      chart.setOption(optionOf(), true);
+    }
+
+    function optionOf() {
+      return {
+        tooltip: {
+          backgroundColor: "#fff", borderColor: "#e4e7ed", textStyle: { color: "#303133", fontSize: 12 },
+          formatter: p => p.dataType === "node"
+            ? `<b>${p.data.name}</b><br/>类型: ${p.data.type}　分类: ${p.data.category || "-"}<br/>连接数: ${p.data.degree}<br/><span style="color:#909399">点击节点查看详情</span>`
+            : `${p.data.source} → ${p.data.target}`
+        },
+        legend: [],
+        series: [{
+          type: "graph", layout: "force", roam: true,
+          data: shown.nodes, links: shown.links,
+          label: { show: true, position: "right", distance: 8, fontSize: 12, color: "#606266",
+                   formatter: p => showLabels.value || p.data.degree >= 4 || p.data.type === "课程" || p.data.type === "岗位" ? p.data.name : "" },
+          force: { repulsion: 900, edgeLength: [110, 260], gravity: 0.05, friction: 0.12, layoutAnimation: true },
+          emphasis: { focus: "adjacency", itemStyle: { shadowBlur: 12, shadowColor: "rgba(0,0,0,.25)" }, lineStyle: { width: 3.5 } },
+          lineStyle: { color: "source", curveness: 0.15, opacity: 0.4, width: 1 },
+          draggable: true, scaleLimit: { min: 0.3, max: 4 }
+        }]
+      };
+    }
+
+    function toggleType(name) {
+      const i = activeTypes.value.indexOf(name);
+      i >= 0 ? activeTypes.value.splice(i, 1) : activeTypes.value.push(name);
+      applyView();
+    }
+    function resetView() { search.value = ""; activeTypes.value = Object.keys(TYPES); scope.value = "all"; applyView(); }
+
+    function exportImage() {
+      if (!chart) return;
+      const a = document.createElement("a");
+      a.download = "知识图谱.png";
+      a.href = chart.getDataURL({ type: "png", pixelRatio: 2, backgroundColor: "#fff" });
+      a.click();
+      ElMessage.success("已导出 知识图谱.png");
+    }
+
+    async function openPreview(node) {
+      previewTitle.value = node.name; previewUrl.value = node.url;
+      previewHtml.value = ""; previewLoading.value = true; drawer.value = true;
+      try {
+        const r = await fetch("/api.php?action=parse&page=" + encodeURIComponent(node.name) + "&prop=text&formatversion=2&format=json");
+        const d = await r.json();
+        previewHtml.value = (d.parse && d.parse.text) || "页面内容读取失败";
+      } catch (e) { previewHtml.value = "读取失败"; }
+      previewLoading.value = false;
+    }
+
+    const tagType = t => TAGS[t] || "info";
+    onMounted(loadData);
+
+    return { loading, search, scope, activeTypes, selected, shown, fullData, drawer, showLabels,
+             previewHtml, previewLoading, previewTitle, previewUrl, TYPES, Refresh, Download, Search,
+             countType, toggleType, resetView, applyView, exportImage, openPreview, tagType, loadData };
+  }
+}).use(ElementPlus).mount("#app");
+</script>
+</body>
+</html>
