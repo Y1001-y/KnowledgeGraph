@@ -13,7 +13,7 @@ LLM 两步摄取（分析 → 生成）        ← ingest.py，无 Ollama 时自
         │  为每个实体写一个 Wiki 页面：
         │  页面正文用 [[双链]] 标注关系，[[Category:xx]] 标注类型
         ▼
-MediaWiki 1.43.1 站点（80+ 页面）   ← 便携 PHP 8.3 内置服务器托管，127.0.0.1:8080
+MediaWiki 1.43.1 站点（80+ 页面）   ← 便携 PHP 8.3 内置服务器托管，127.0.0.1:8089
         │ build_graph.py 调 MediaWiki API 拉取全部页面及内部链接
         ▼
 graph_data.json → graph.html       ← Vue3 + Element Plus + ECharts 力导向图
@@ -27,7 +27,7 @@ graph_data.json → graph.html       ← Vue3 + Element Plus + ECharts 力导向
 cd D:\study\KnowledgeGraph\test\wiki
 
 :: 1. 启动站点（或双击 start_wiki.bat）
-php\php.exe -S 127.0.0.1:8080 -t mediawiki-1.43.1 mediawiki-1.43.1\router.php
+php\php.exe -S 127.0.0.1:8089 -t mediawiki-1.43.1 mediawiki-1.43.1\router.php
 
 :: 2. 重建数据与图谱（首次或数据变更时）
 python seed_data.py
@@ -35,8 +35,8 @@ python ingest.py
 python build_graph.py
 
 :: 3. 浏览
-::    知识图谱  http://127.0.0.1:8080/graph.html
-::    Wiki 首页 http://127.0.0.1:8080/
+::    知识图谱  http://127.0.0.1:8089/graph.html
+::    Wiki 首页 http://127.0.0.1:8089/
 ::    后台      admin / Admin12345
 ```
 
@@ -53,6 +53,7 @@ python build_graph.py
 | `web/vendor/` | Vue3 / Element Plus / ECharts 本地静态库（离线可用） |
 | `deploy_static.py` | 把 `web/` 部署到 MediaWiki 站点根目录（启动/构图时自动调用） |
 | `start_wiki.bat` | 一键启动（先部署前端再起站点） |
+| `Wiki使用机制.md` | **MediaWiki API 使用详解**：怎么把数据写成页面、怎么把页面读成图谱 |
 | `说明文档.md` | 完整说明：技术选型、实现逻辑、上线衔接方案 |
 
 > 运行时目录 `php/`、`mediawiki-1.43.1/`、`mw-data/`、`data/` 已写入 `.gitignore`，

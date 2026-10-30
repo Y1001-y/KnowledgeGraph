@@ -12,7 +12,7 @@ MW_ROOT = os.path.join(BASE_DIR, "mediawiki-1.43.1")
 
 # ---------- MediaWiki ----------
 # 本地便携 PHP 内置服务器
-MW_SERVER = "http://127.0.0.1:8080"
+MW_SERVER = "http://127.0.0.1:8089"
 MW_API = f"{MW_SERVER}/api.php"
 MW_PAGE = f"{MW_SERVER}/index.php"
 MW_USER = "admin"
