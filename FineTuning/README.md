@@ -1,93 +1,80 @@
 # FineTuning
 
-模型微调模块。基于 Unsloth + QLoRA 微调 Qwen3-8B，实现「岗位 JD → 技术技能抽取」，
-并产出江苏互联网 AI 岗位市场的技能需求统计。
+> **当前状态：微调路线已搁置（2026-11-02）。**  
+> 本目录不再包含模型权重、训练脚本和评估产物。现在它承担两个职责：  
+> ① 保存已产出的训练集 / 测试集 / 技能统计；② 保存数据准备与数据体检脚本，  
+> 供当前「云端抽取 → 本地归一化 → 本地分类 → 统计」链路复用。
+>
+> 历史方案（Unsloth + QLoRA 微调 Qwen3-8B）停止的技术原因见  
+> [`归档/ModelFineTuning/`](../归档/ModelFineTuning/README.md) 第二节；
+> 三条路线的横向对比与最终选型依据见 [`归档/README.md`](../归档/README.md) 第一、二节。
 
-## 目录说明
-
-| 目录 | 用途 | 是否提交 |
-|---|---|---|
-| `config/` | 超参配置（yaml） | 是 |
-| `Datasets/Raw/` | 原始数据集（大文件，本地存放） | 否，仅保留 .gitkeep |
-| `Datasets/Processed/` | 处理后的训练/测试集与技能统计 | 否（可由脚本重建），仅保留 .gitkeep |
-| `Datasets/Samples/` | 脱敏小样本（格式参考） | 是 |
-| `Scripts/` | 数据准备、训练、评估、推理脚本 | 是 |
-| `Notebooks/` | 实验用 notebook | 是 |
-| `Outputs/` | 训练产物（LoRA 权重、评估报表、预测结果） | 否，仅保留 .gitkeep |
-| `Docs/` | 训练记录与踩坑笔记 | 是 |
-
-## 任务定义
+## 一、当前数据链路
 
 ```
-输入: 岗位名称 + 职位类别 + 岗位描述(JD 前 1200 字符)
-输出: 该岗位要求的技术技能列表（顿号分隔，如 Java、MySQL、Redis）
+Origin data/*.csv（BOSS 直聘导出）
+  │
+  ├─ ① 云端抽取      Qwen3-8B（硅基流动 / 阿里云百炼）+ ../Cleaning/prompts/extract_skills.md
+  │                  一条 JD 一次请求，结果落 ../Cleaning/out/skills.jsonl
+  │
+  ├─ ② 本地归一化    别名映射表：../Cleaning/rules/alias_map.yaml
+  │                  映射表来源：Scripts/prepare_dataset.py 内置的 209 条技能词典
+  │
+  ├─ ③ 本地分类      chinese-roberta-wwm-ext（102M），hard / soft 二分类
+  │                  词典已覆盖的直接定类，长尾才走模型，结果回写映射表
+  │
+  └─ ④ 统计          技能频次、两类占比、按岗位 / 学历 / 经验交叉
 ```
 
-技能标签由 `Scripts/prepare_dataset.py` 内置的 130+ 条正则词典（覆盖编程语言、
-前端、后端框架、数据库、大数据、AI、运维、测试、嵌入式）从 JD 中抽取生成。
+云端只负责「读出 JD 里写了哪些技能」，不做归一化、不做分类。归一化和分类都是本地  
+确定性环节，保证同一技能永远落在同一类，频次统计才有意义。
 
-## 运行环境
+## 二、目录说明
 
-- WSL2 Ubuntu + RTX 5070 Ti Laptop 12GB（sm_120，需 torch 2.7+ / cu128）
-- Python 3.12 venv：`/home/yy/unsloth-work/.venv`
-- 关键依赖：unsloth、trl、transformers 5.x、datasets（国内 pip 装 xlsxwriter 需镜像）
+| 目录                                 | 当前内容                                                | 说明                                    |
+| ---------------------------------- | --------------------------------------------------- | ------------------------------------- |
+| `Datasets/Raw/`                    | 空（`.gitkeep`）                                       | 原始数据放 `../../Origin data/`，这里不入库      |
+| `Datasets/Processed/`              | 训练集 66M + 14M jsonl、测试集 3.7M、`技能统计.xlsx/csv`        | **保留**。数据本身与模型无关，后续归一化、分类训练、统计都要用     |
+| `Datasets/Samples/`                | 空（`.gitkeep`）                                       | 10 条样本已迁至 [`../Cleaning/eval/jd-sample-10.txt`](../Cleaning/eval/jd-sample-10.txt)（评估资产归清洗管线） |
+| `Scripts/`                         | `prepare_dataset.py`、`audit_data.py`、`infer_csv.py` | **保留**，见下节用途                          |
+| `Outputs/eval/`、`Outputs/predict/` | 空（`.gitkeep`）                                       | 原是微调模型的评估与预测产物，模型废弃后一并清空              |
+| `Docs/`                            | `训练记录.md`                                           | 历史踩坑笔记，其中 Qwen3 思考模式等条目对云端调用仍然适用      |
+| `Notebooks/`                       | 空（`.gitkeep`）                                       | —                                     |
+| `config/`                          | 空                                                   | 超参 yaml 属微调时代产物，已随训练脚本移除              |
 
-## 使用流程
+## 三、保留下来的脚本还能干什么
 
-```bash
-source /home/yy/unsloth-work/.venv/bin/activate
-cd /mnt/d/study/KnowledgeGraph/FineTuning/Scripts
+| 脚本                   | 原用途                           | 现在怎么用                                                    |
+| -------------------- | ----------------------------- | -------------------------------------------------------- |
+| `prepare_dataset.py` | 正则词典抽技能 → 生成 SFT jsonl        | **只用它的词典部分**（209 条规范名 + 别名），搬迁出来做归一化映射表；SFT 生成部分已无用      |
+| `audit_data.py`      | 数据体检 8 个维度（空值、重复、长度分布、技能覆盖率等） | 原样可用，清洗前后各跑一次，衡量清洗质量                                     |
+| `infer_csv.py`       | 调本地微调模型批量推理                   | 骨架可直接复用：读 CSV → 批量调用 → 写回结果。把推理后端从本地模型换成云端 API 就是现在的抽取脚本 |
 
-# 1. 模型加载自检（首次必跑）
-python test_load.py
+## 四、已移除的内容
 
-# 2. 数据准备：清洗 -> 去重 -> 划分 -> 技能抽取 -> SFT jsonl + 双口径统计
-python prepare_dataset.py                 # --n 1000 控制测试集行数
+| 移除项                                                                                            | 体积   | 时间         |
+| ---------------------------------------------------------------------------------------------- | ---- | ---------- |
+| `Outputs/qwen3-8b-skills-lora/`（LoRA adapter ×3 + optimizer.pt ×2 + tokenizer / trainer_state） | 454M | 2026-11-02 |
+| `Scripts/unsloth_compiled_cache/`                                                              | 2.6M | 2026-11-02 |
+| `Scripts/train_sft.py`、`eval_sft.py`、`test_load.py`、`download_model.sh`                        | —    | 2026-11-02 |
+| `Outputs/eval/`（summary.json、技能级报表.xlsx、样本级明细.xlsx）                                            | 53K  | 2026-11-02 |
+| `Outputs/predict/`（两轮预测结果 csv / xlsx）                                                          | 36K  | 2026-11-02 |
 
-# 3. 数据体检（8 维度，改数据后必跑，30 秒）
-python audit_data.py
+整个目录从 541M 降到 85M，剩下的 85M 全是数据集。
 
-# 4. 训练（QLoRA）
-python train_sft.py --epochs 1            # --max-steps 20 冒烟；--resume 断点续训
+## 五、下一步
 
-# 5. 评估：测试集 P/R/F1 + 技能级误报/漏报报表
-python eval_sft.py                        # --limit 0 全量
+> 清理链路的资产已独立到 [`../Cleaning/`](../Cleaning/)，以下步骤在那边执行。
 
-# 6. 端到端推理：直接对原始 CSV 跑预测
-python infer_csv.py                       # --n 50 / --start 100
-```
+1. 定稿 [`../Cleaning/prompts/extract_skills.md`](../Cleaning/prompts/extract_skills.md)，用
+   [`../Cleaning/eval/jd-sample-10.txt`](../Cleaning/eval/jd-sample-10.txt) 的 6–10 条
+   （未被示例覆盖的部分）算第一版 recall / precision
+2. 搭云端批量抽取脚本（基于 `infer_csv.py` 骨架）：按 JD 正文去重、并发 3、指数退避、  
+   断点续跑，结果写 `../Cleaning/out/skills.jsonl`
+3. 从 209 条词典生成 `../Cleaning/rules/alias_map.yaml`，归一化后用
+   `../Cleaning/rules/blocklist.yaml` 过滤领域词与指标词
+4. 抽 2000 条训练分类器，用 macro-F1 和 soft 类 recall 评估，不看 accuracy
+5. 全量跑批 → 统计 → 出图
 
-## 数据集口径（重要）
-
-- 源数据：BOSS直聘「3月新增-江苏-互联网AI」，20874 行 × 125 列
-- 去重：按 **JD 正文**（去空白）去重后切分，杜绝训练/测试泄漏
-- 标签：**纯词典抽取**，且只从输入可见的截断文本中抽取；平台 showSkills
-  标签含大量非技能噪声（"工作简单""可带手机"），默认不并入
-- 剔除无技能命中岗位后：训练 8982 条 / 测试 498 条，覆盖 208 种技能
-- 统计双口径：`技能统计.xlsx` 同时含「含重复岗位」与「去重岗位(含市场占比%)」
-
-## 底座与训练参数
-
-| 项 | 值 |
-|---|---|
-| 底座 | `unsloth/Qwen3-8B-unsloth-bnb-4bit`（预量化 4bit，约 7GB） |
-| 微调方式 | QLoRA（r=16, alpha=32，7 个线性层全挂） |
-| `max_seq_length` | 1024 |
-| batch / 梯度累积 | 1 / 8 |
-| learning_rate | 2e-4，cosine |
-| epochs | 1（可加大） |
-| 显存优化 | adamw_8bit + `use_gradient_checkpointing="unsloth"` |
-| 可训练参数 | 43.6M / 8.23B（0.53%） |
-| 训练技巧 | chat template 关闭思考模式；`train_on_responses_only` 只对回复段算 loss |
-
-OOM 时优先降 `max_seq_length` 到 512，其次减小 `gradient_accumulation_steps`。
-
-## 实验记录
-
-见 `Docs/训练记录.md`：v1（脏标签，已废弃）→ v2（纯词典口径）的完整过程、
-指标与 6 条踩坑清单（HF 离线、hf-mirror Xet 401、Unsloth 参数名、TRL 版本兼容、
-Qwen3 思考模式、欠训练复读）。
-
-## 产物导出（待做）
-
-LoRA adapter → 合并回底座 → 转 GGUF（Q4_K_M）→ 接入 Ollama 本地推理。
+详见 [`归档/ModelFineTuning/README.md`](../归档/ModelFineTuning/README.md) 第二节「停止的技术原因」，  
+那里有输出上界锁死的机理推导与吞吐实测数据。
