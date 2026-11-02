@@ -1,0 +1,42 @@
+# 抽取链路参数
+# 密钥不进本文件：用环境变量 LLM_API_KEY（或同目录 .env，已被 gitignore）
+
+provider: siliconflow          # siliconflow（免费）| dashscope（按量计费）
+
+endpoints:
+  siliconflow:
+    base_url: https://api.siliconflow.cn/v1
+    model: Qwen/Qwen3-8B       # 注意不能写 Qwen3-8B，会 404
+  dashscope:
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    model: qwen3-8b            # 注意不能写 Qwen3-8B
+
+generation:
+  temperature: 0.0             # 抽取任务必须锁 0，否则每轮结果不可比
+  top_p: 1.0                   # 与 temperature=0 配套，不要留 0.95
+  max_tokens: 512
+  enable_thinking: false       # Qwen3 思考模式会污染 JSON，必须关
+  response_format: json_object # 平台不支持时降级为纯文本 + 解析端剥离 ```json
+
+batching:
+  concurrency: 3               # 免费额度有 RPM 限制，5 并发易触发 429
+  timeout_seconds: 60
+  retry:
+    max_attempts: 5
+    backoff: exponential       # 2s / 4s / 8s / 16s
+    base_seconds: 2
+    retry_on: [429, 500, 502, 503, 504, timeout, json_decode_error]
+
+input:
+  jd_max_chars: 3000           # 8B 处理长文本时尾部技能易漏，BOSS JD 通常 1500 内
+  dedup_by: jd_text            # 按 JD 正文去重，不是按 job_id
+  id_prefix: 3yxz              # 与 eval/jd-sample-10.txt 的编号保持一致
+  one_jd_per_request: true     # 多条混发会导致 job_id 与技能对应错位
+
+paths:
+  prompt: prompts/extract_skills.md
+  eval_set: eval/jd-sample-10.txt
+  alias_map: rules/alias_map.yaml
+  blocklist: rules/blocklist.yaml
+  output: out/skills.jsonl
+  failed: out/failed.jsonl

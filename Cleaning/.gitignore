@@ -1,0 +1,12 @@
+# 运行产物（可重建，不入库）
+out/*
+!out/.gitkeep
+
+# 密钥（只提交 .env.example）
+.env
+.env.local
+
+# Python 缓存
+__pycache__/
+*.pyc
+.venv/

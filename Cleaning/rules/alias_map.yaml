@@ -1,0 +1,79 @@
+# 别名归并表（归一化用）
+#
+# 作用：解决"同一技能不同写法导致频次分裂"。抽取阶段要求原样输出，本表在抽取之后
+#       统一成规范名，保证统计口径一致。
+# 执行时机：抽取完成 → 本表归一 → 黑名单过滤 → 统计
+# 原则：纯确定性，查表命中即替换，未命中保留原文并记入 pending，人工确认后再补表。
+# 不做语义合并："React" 与 "React Native"、"Java" 与 "JavaScript" 是不同技能，不合并。
+
+match:
+  lowercase: true            # 比较前统一小写（Mysql / mysql / MySQL 视为同一键）
+  strip_spaces: true         # 去首尾空格；中间空格合并为单个
+  fullwidth_to_halfwidth: true   # 全角数字/符号转半角（＋＋ → ++）
+  keep_original_if_unmapped: true # 未命中不丢，保留原文进 pending_alias 供人工确认
+
+# key = 规范名（写进统计表的最终写法），value = 需要归并到它的变体
+aliases:
+
+  # ---------- 编程语言 ----------
+  JavaScript: [js, javascript, java script, ecmascript, es6]
+  TypeScript: [ts, typescript]
+  Python: [py, python3, python2]
+  Java: [java8, java11, java17]
+  C: [c语言, c 语言, ansi c]
+  C++: [cpp, c＋＋]
+  C#: [csharp, c sharp, c＃]
+  Go: [golang]
+  PHP: [php7, php8]
+  Shell: [shell脚本, bash脚本, shell script]
+
+  # ---------- 前端 ----------
+  Vue: [vue, vue.js, vuejs, vue2, vue3, vue 3]
+  React: [react.js, reactjs]
+  jQuery: [jquery, j query]
+  uni-app: [uniapp, uni app]
+  HTML: [html5]
+  CSS: [css3]
+
+  # ---------- 后端 / 框架 ----------
+  Spring Boot: [springboot, spring-boot]
+  Spring Cloud: [springcloud, spring-cloud, spring cloud alibaba]
+  Spring: [spring framework]
+  .NET Core: [net core, .netcore, dotnet core, netcore]
+  .NET: [dotnet, dot net]
+  Django: [django rest framework, drf]
+  MyBatis: [mybatis-plus, mybatisplus]
+
+  # ---------- 数据库 ----------
+  MySQL: [mysql, my sql]
+  PostgreSQL: [postgres, pgsql, pg]
+  SQL Server: [sqlserver, mssql]
+  MongoDB: [mongo]
+  Redis: [redis cluster]
+
+  # ---------- 中间件 / 运维 ----------
+  Kubernetes: [k8s, k8s集群, kubernetes集群]
+  Docker: [docker容器, dockerfile]
+  RabbitMQ: [rabbit mq]
+  Kafka: [apache kafka]
+  Nginx: [nginx反向代理]
+  Linux: [linux操作系统, unix]
+
+  # ---------- 测试 / 硬件 ----------
+  LabVIEW: [labview, lab view, ni labview]
+  TestStand: [teststand, test stand, ni teststand]
+  ROS: [ros1, ros 1]
+  ROS2: [ros 2]
+  Git: [gitlab, github, git版本控制]
+
+  # ---------- AI / 数据 ----------
+  LLM: [大模型, 大语言模型, large language model]
+  RAG: [检索增强生成]
+  PyTorch: [pytorch, torch]
+  TensorFlow: [tensorflow, tf]
+
+# 需要人工确认的疑似同义（不自动合并，避免误伤）
+pending_review:
+  - [前端开发, Web前端]        # 前者过泛，抽取阶段本应被规则 5 拦住
+  - [数据分析, 数据处理]
+  - [项目管理, 项目管理能力]    # 软技能加"能力"后缀是否合并，取决于分类口径
