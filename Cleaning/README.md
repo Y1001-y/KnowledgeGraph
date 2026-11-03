@@ -1,71 +1,112 @@
-# Cleaning — 数据清洗管线（当前路线）
+# Cleaning — 数据清洗管线
 
-从 BOSS 直聘 JD 到「技能频次 + 两类占比」的完整链路资产。**当前唯一在跑的清洗方案**，
-取代了归档里的两条旧路线（`../归档/DataPreprocessing/` 词典脚本、
-`../归档/ModelFineTuning/` 本地微调）。
+从 BOSS 直聘招聘数据（JD 文本）到「技能频次统计 + 技能分类占比」的完整处理链路。
+本目录为当前唯一在役的清洗方案，取代归档中的两条历史路线
+（`../归档/DataPreprocessing/` 词典规则脚本、`../归档/ModelFineTuning/` 本地微调）。
 
 ```
 Origin data/*.csv
    │
    ├─ ① 抽取   云端 Qwen3-8B + prompts/extract_skills.md      → out/skills.jsonl
-   ├─ ② 归一   rules/alias_map.yaml（确定性，可审计）
-   ├─ ③ 分类   rules 命中即定类；长尾交 chinese-roberta（待训）
-   └─ ④ 统计   频次 / 两类占比 / 按岗位·学历·经验交叉
+   ├─ ② 归一   rules/alias_map.yaml（确定性映射，结果可审计）
+   ├─ ③ 分类   rules 命中即定类；长尾样本交 chinese-roberta（待训练）
+   └─ ④ 统计   频次 / 两类占比 / 按岗位·学历·经验交叉分析
 ```
 
-分工原则：**读懂文本交给生成式模型，保持口径交给确定性代码。**
-抽取允许有噪声（后面能过滤），归一与分类必须零随机（否则频次不可比）。
+分工原则：**语义理解交由生成式模型，口径一致性交由确定性代码。**
+抽取阶段允许存在噪声（由后处理过滤），归一化与分类阶段不允许引入随机性
+（否则跨批次频次统计不可比）。
 
 ## 目录说明
 
 | 路径 | 内容 | 说明 |
 |---|---|---|
-| `prompts/extract_skills.md` | 当前生效的抽取 prompt（v3） | **纯 prompt 文本，整个文件就是 system prompt**，可直接全选复制，没有任何元信息、front matter 或注释 |
-| `prompts/CHANGELOG.md` | 版本演进与每轮实测结论 | 改 prompt 必须同步写一条，记录改了什么、为什么、指标怎么变 |
-| `config.yaml` | 模型 ID、接口地址、温度、并发、重试、截断长度 | 只放参数，不放密钥；密钥走环境变量 / `.env` |
-| `eval/jd-sample-10.txt` | 10 条样本，`job_id` 为 `3yxz-000` ~ `3yxz-009` | **第 1–5 条 = dev**（调 prompt 用，prompt 里的示例取自这里）；**第 6–10 条 = test**（只在验收时跑一次） |
-| `eval/results/` | 每轮跑批的结果快照 | 命名 `YYYYMMDD-runN.jsonl`，一行一条 `{"job_id","skills"}` |
-| `rules/alias_map.yaml` | 别名归并表（JS → JavaScript、k8s → Kubernetes） | 归一化用，确定性；新增映射需人工确认 |
-| `rules/blocklist.yaml` | 后处理黑名单（领域词、指标词、平台标签噪声） | 区分 `drop` 与 `flag` 两级处理 |
-| `scripts/` | 抽取 / 归一 / 统计脚本（待补） | 骨架可参考 `../FineTuning/Scripts/infer_csv.py` |
-| `out/` | 运行产物（`skills.jsonl`、`failed.jsonl`） | 已进 `.gitignore`，不入库 |
+| `prompts/extract_skills.md` | 当前生效的技能抽取提示词 | 文件全文即系统提示词（system prompt），不含元信息、front matter 或注释，可整体复制使用 |
+| `prompts/CHANGELOG.md` | 提示词修订记录与各轮实测结论 | 每次修订须同步追加一条，记录变更内容、变更原因及评估指标变化 |
+| `config.yaml` | 模型 ID、接口地址、采样参数、并发数、重试策略、截断长度 | 仅存放运行参数，禁止存放密钥；密钥经环境变量或 `.env` 注入 |
+| `eval/jd-sample-10.txt` | 评估样本 10 条，`job_id` 为 `3yxz-000` ~ `3yxz-009` | **第 1–5 条为开发集（dev）**，用于提示词迭代，提示词内示例取材于此；**第 6–10 条为测试集（test）**，仅在验收阶段使用一次 |
+| `eval/gold/gold-30.jsonl` | 人工标注基准（gold standard）：30 条 JD、239 个技能项 | 每条附 `note` 字段记录边界判定依据。作为召回率 / 准确率的评估基准，提示词与过滤规则的所有变更均须在其上评估；标注口径见 `eval/gold/README.md` |
+| `eval/results/` | 各轮批量抽取的结果快照 | 命名 `YYYYMMDD-runN.jsonl`，每行一条 `{"job_id","skills"}`。`20261102-run1.jsonl` 即原 `FineTuning/Outputs/prompt/20261102/001.txt`（因其为结果快照而非提示词版本，故重命名） |
+| `rules/alias_map.yaml` | 别名归并映射表（JS → JavaScript、k8s → Kubernetes 等） | 用于确定性归一化；新增映射须经人工确认 |
+| `rules/blocklist.yaml` | 后处理过滤词表（领域名词、考核指标、平台标签噪声等） | 分 `drop`（直接剔除）与 `flag`（标记待复核）两级处理 |
+| `scripts/run_extract.py` | 抽取主脚本：CSV 读取 → 样本导出 → 云端抽取 → 汇总输出 | 配置区位于脚本顶部；`--txt-only` 仅导出样本；唯一第三方依赖 `openpyxl`，未安装时自动降级输出 CSV。参数以脚本顶部为准（未读取 `config.yaml`，以避免引入 pyyaml 依赖；修改参数时两处需同步） |
+| `out/` | 运行产物（`skills.jsonl`、`failed.jsonl` 等） | 已列入 `.gitignore`，不入版本库 |
 
-## 当前 prompt 状态（v3）
+## 提示词当前覆盖范围
 
-- 结构：7 条禁止 + 8 条规则 + 5 个示例 + 输出格式
-- 已解决：「车辆 / 行人 / 道路 / 障碍物」这类**被操作对象**不再被抽出（靠示例 2 压住，纯规则压不住）
-- **未解决**：`自动驾驶`、`机器人导航`（领域名）、`标注准确率`、`质量标准`（考核指标）仍会漏进来
-- 判断：8B 的指令跟随容量已接近上限，继续加规则边际收益递减，**剩余噪声交给 `rules/blocklist.yaml` 过滤**，不再指望 prompt 100% 干净
+- 结构：禁止条款 10 条 + 抽取规则 9 条 + 示例 5 组 + 输出格式约定
+- 已覆盖的误抽类型（提示词禁令与过滤词表双重约束）：
+  操作对象词（车辆、行人、道路等被处理目标）、领域名称（自动驾驶、机器人导航等）、
+  考核指标（标注准确率、转化率、DAU 等）、福利与实物（节日福利、冰箱等）、
+  品牌（ABB、发那科、ChatGPT 等）、空泛能力修饰语（技术攻坚能力、创新等）、
+  任务动作动词（开门、对接等）
+- 待复核类型（标记保留，不作直接剔除）：「XX经验」类经历描述、
+  `项目管理平台` 等泛指表述，输出至 flag 列由人工抽检裁定
+- 结论：8B 规模模型的指令遵循容量已接近上限，继续追加规则的边际收益递减；
+  **残余噪声统一交由 `rules/blocklist.yaml` 后处理过滤**，不以提示词完全消噪为目标
 
-上一轮实测（`eval/results/20261102-run1.jsonl`，第 1 条 `3yxz-000`）：
-严格口径 recall 9/9 = 100%，precision 9/21 = 42.9%，其中 8 个是黑名单能稳定过滤的词。
+## 指标驱动的演进路线
+
+**原则：标注投入应集中于基准集建设，而非反复人工审读输出并修订提示词。**
+
+1. **当前规模（数十条）**：以 `eval/gold/gold-30.jsonl` 为评估基准，每复核一批新数据即追加；
+   提示词、过滤规则、模型的任何变更均须在基准集上评估召回率与准确率，指标提升则采纳，下降则回滚
+2. **数千条规模**：监控 JSON 解析失败率、单条技能数分布、频次榜新增词三项指标，
+   异常自动暴露；过滤词表按增量方式维护并逐步收敛，数批之后趋于稳定
+3. **数万条规模**：以同一基准集对比评估 `qwen3-14b` / `qwen3-32b`（全量 32B 成本约百余元）；
+   或引入二次自检机制（由模型对抽取结果执行复核，筛除非技能项）
+4. **基准集达到数千条后**：可微调本地小模型替代云端调用（标注来源为人工标注而非词典，
+   与已归档的 `FineTuning/` 方案存在本质差异），此时单位处理成本趋近于零
+
+## 后处理管线（已集成）
+
+脚本每次运行自动按固定顺序执行：
+
+```
+模型原始输出 → ① alias_map 归一化（Mysql→MySQL，约 110 种写法）
+            → ② 归一化后去重（保持出现顺序）
+            → ③ blocklist 过滤（drop 剔除 / flag 标记）
+            → 写入 jsonl 与 Excel（含「被过滤项」「待人工复核」两列，全程可审计）
+```
 
 ## 使用流程
 
-**调 prompt（dev）**
+**提示词迭代（开发集）**
 
-1. 打开 `prompts/extract_skills.md`，整份复制到平台的 **System Prompt** 输入框（不是对话区）
-2. 参数：`temperature=0`、`top_p=1`、`max_tokens=512`、思考模式关闭
-3. 从 `eval/jd-sample-10.txt` 取第 1–5 条，**新开会话**逐条粘（一次一条，不要连贴）
-4. 对着 JD 原文核「多抽了什么、漏了什么」，改 prompt → 重测 → 在 `CHANGELOG.md` 记一笔
+1. 打开 `prompts/extract_skills.md`，全文粘贴至平台 **System Prompt** 输入框（非对话区）
+2. 采样参数：`temperature=0`、`top_p=1`、`max_tokens=512`，思考模式关闭
+3. 从 `eval/jd-sample-10.txt` 取第 1–5 条，**每次新建会话**逐条提交（单次仅提交一条）
+4. 对照 JD 原文核对多抽与漏抽项，修订提示词后重新验证，并在 `CHANGELOG.md` 记录
 
-**验收（test）**
+**验收（测试集）**
 
-第 6–10 条在 prompt 定稿前**不要碰**。定稿后跑一次，结果存
-`eval/results/YYYYMMDD-final.jsonl`，这一批的 recall / precision 才是能写进报告的指标。
-（dev 集里 3 条被 prompt 示例覆盖过，跑出的分数不作为效果证据。）
+第 6–10 条在提示词定稿前禁止使用。定稿后执行一次，结果存至
+`eval/results/YYYYMMDD-final.jsonl`，该批次的召回率 / 准确率方可作为报告指标。
+（开发集中 3 条已被提示词示例覆盖，其评估结果不作为效果依据。）
 
-**跑批**
+**批量抽取**
 
-按 `config.yaml` 的并发与重试策略逐条调用，结果 append 到 `out/skills.jsonl`，
-失败单条进 `out/failed.jsonl` 便于只重跑失败子集。14 万条量级见
-`../归档/README.md` 第一节的成本对比表。
+```bash
+cd Cleaning
+python scripts/run_extract.py                      # 全流程，默认 30 条
+python scripts/run_extract.py --n 50 --txt-only    # 仅导出样本 txt，不调用 API
+python scripts/run_extract.py --input "D:\\...csv" --n 100   # 临时指定输入文件与条数
+```
 
-## 目录边界（避免重复放置）
+- 条数与输入文件可经命令行参数覆盖，默认值定义于脚本顶部配置区（`N = 30`）
+- 产物统一输出至 `out/`，文件名携带时间戳，多次运行互不覆盖
+- API 逐条独立请求（串行），结果逐条追加写入 `out/skills_<时间戳>.jsonl`，中断不丢失已完成部分
+- **后处理过滤已集成**：每次运行自动加载 `rules/blocklist.yaml`，命中 `drop` 类的词条从结果剔除（记录于「被过滤项」列），命中 `flag` 类的保留并标记于「待人工复核」列。发现新的误抽词 → 追加至词表 → 重新运行，**无需修订提示词**
+- **别名归一化已集成**：每次运行自动加载 `rules/alias_map.yaml`（约 110 种写法），`Mysql → MySQL`、`java → Java`、`VUE → Vue`、`k8s → Kubernetes` 等大小写与写法变体自动归并，无需人工复核；归一化后自动去重
+- Excel 包含两个工作表：岗位明细（job_id / 技能 / 状态）与技能频次；未安装 openpyxl 时自动降级输出 CSV
+- 失败原因记录于 Excel「状态」列，重试采用指数退避策略（2s/4s/8s/16s/32s），最多重试 5 次
+- 14 万条量级的成本与耗时评估见 `../归档/README.md` 第一节
 
-| 内容 | 应该放哪 | 不要放哪 |
+## 目录边界
+
+| 内容 | 应存放于 | 禁止存放于 |
 |---|---|---|
-| prompt、评估集、归一规则、黑名单、抽取产物 | 本目录 | `config/`（只放系统级配置）、`FineTuning/`（已归档路线） |
+| 提示词、评估集、归一规则、过滤词表、抽取产物 | 本目录 | `config/`（仅存放系统级配置）、`FineTuning/`（已归档路线） |
 | 原始 CSV | `../Origin data/` | 本目录（只读引用，不复制） |
-| 训练集 / 测试集 / 历史技能统计 | `../FineTuning/Datasets/` | 本目录（那是路线二的产物，保留归档即可） |
-| 分类器代码与权重 | 待定（预计 `classifier/`） | 本目录（本目录只负责清洗与统计） |
+| 训练集 / 测试集 / 历史技能统计 | `../FineTuning/Datasets/` | 本目录（历史路线产物，保留归档） |
+| 分类器代码与模型权重 | 待定（预计 `classifier/`） | 本目录（本目录仅负责清洗与统计） |
